@@ -108,6 +108,7 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
+  SysUtils,
   Interfaces, // this includes the LCL widgetset
   Forms, pascalscript, alarmviewer
   { you can add units after this };

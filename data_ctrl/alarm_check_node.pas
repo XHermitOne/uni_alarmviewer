@@ -22,7 +22,7 @@ uses
   //uPSC_forms, uPSR_forms,
   uPSRuntime,
   uPSComponent,
-  uPSDisassembly,
+  //uPSDisassembly,
   uPSR_dateutils, uPSC_dateutils,
   uPSR_dll, uPSC_dll,
 
@@ -89,7 +89,9 @@ end;
 implementation
 
 uses
-  log, filefunc, memfunc, netfunc;
+  log,
+  //filefunc, memfunc,
+  netfunc, dbfunc;
 
 
 constructor TICAlarmCheckNode.Create;
@@ -129,6 +131,7 @@ procedure TICAlarmCheckNode.PSScriptCompile(Sender: TPSScript);
 begin
   RegisterDateTimeLibrary_C(Sender.Comp);
 
+  Sender.AddFunction(@log.PrintTxt, 'procedure PrintTxt(sTxt: AnsiString; bNewLine: Boolean)');
   Sender.AddFunction(@log.DebugMsg, 'procedure DebugMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
   Sender.AddFunction(@log.DebugMsgFmt, 'procedure DebugMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
   Sender.AddFunction(@log.ErrorMsg, 'procedure ErrorMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
@@ -154,6 +157,8 @@ begin
   //Sender.AddFunction(@Halt, 'procedure Halt(ErrNum: LongInt)');
 
   Sender.AddFunction(@netfunc.DoPing, 'function DoPing(sHost: AnsiString): Boolean)');
+
+  Sender.AddFunction(@dbfunc.CheckODBCConnection, 'function CheckODBCConnection(aDriver: AnsiString; aDataSourceName: AnsiString): Boolean)');
 
   //Sender.AddRegisteredVariable('Application', 'TApplication');
 
@@ -188,6 +193,8 @@ begin
     FScript.Script.Text := aScriptTxt;
     if FScript.Compile then
     begin
+      // Перед проверкой печатаем имя объекта
+      log.PrintTxt(Name + ': ', False);
       if not FScript.Execute then
       begin
         log.ErrorMsgFmt('Объект <%s>. Ошибка выполнения скрипта определения аварии <%s>', [Name, aScriptTxt]);

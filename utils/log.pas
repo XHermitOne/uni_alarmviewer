@@ -66,7 +66,7 @@
 
 47 	белый
 
-Версия: 0.0.8.3
+Версия: 0.0.9.2
 
 ВНИМАНИЕ! Вывод сообщений под Linux проверять только в терминале.
 Только он выводит корректно сообщения.
@@ -120,12 +120,20 @@ function GetLogMode(): Boolean;
 @return Перекодированный текст
 }
 function EncodeUnicodeString(sTxt: AnsiString; sCodePage: AnsiString = ''): AnsiString;
+
 {
 Печать цветового текста
 @param sTxt Печатаемый текст
 @param sColor Дополнительное указание цветовой раскраски
 }
 procedure PrintColorTxt(sTxt: AnsiString; sColor: AnsiString);
+
+{
+Печать текста
+@param sTxt Печатаемый текст
+@param bNewLine Произвести перевод строки?
+}
+procedure PrintTxt(sTxt: AnsiString; bNewLine: Boolean = True);
 
 {
 Инициализация файла лога.
@@ -377,6 +385,22 @@ begin
     // В конце отключим цвет, возможно далее будет стандартный вывод
     if sysfunc.IsOSWindows() then
       crt.TextColor(crt.Mono);
+end;
+
+{
+Печать текста
+@param sTxt Печатаемый текст
+@param bNewLine Произвести перевод строки?
+}
+procedure PrintTxt(sTxt: AnsiString; bNewLine: Boolean = True);
+var
+    str_txt: AnsiString;
+begin
+    str_txt := EncodeUnicodeString(sTxt, GetDefaultEncoding());
+    if bNewLine then
+      WriteLn(str_txt)
+    else
+      Write(str_txt);
 end;
 
 {

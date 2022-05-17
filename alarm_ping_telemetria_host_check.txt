@@ -1,0 +1,13 @@
+begin 
+  if not DoPing('telemetria-win') then
+  begin
+    //ErrorMsg('Нет связи с сервером Telemetria-Win', True, False);
+    PrintTxt('Проверка связи с сервером Telemetria-Win ... FAIL', True);
+    { Halt(1); ! Внимание! Здесь нельзя закрывать программу. Т.к. необходима регистрация с других источников данных }
+  end
+  else
+  begin
+    //InfoMsg('Проверка связи с сервером Telemetria-Win ... OK', True, False);
+    PrintTxt('Проверка связи с сервером Telemetria-Win ... OK', True);
+  end;
+end.

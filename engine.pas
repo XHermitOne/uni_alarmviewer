@@ -1,7 +1,7 @@
 {
 Модуль классов движка
 
-Версия: 0.0.3.1
+Версия: 0.0.3.2
 }
 
 unit engine;
@@ -28,10 +28,10 @@ const
 
 type
      {
-    TICAlarmViewerProto - абстрактный тип движка
+    TICAlarmCheckerProto - абстрактный тип движка
     проверки и регистрации аварий.
     }
-    TICAlarmViewerProto = class(TObject)
+    TICAlarmCheckerProto = class(TObject)
     private
       { Менеджер настроек }
       FSettingsManager: TICSettingsManager;
@@ -128,9 +128,9 @@ type
     end;
 
     {
-    TICAlarmViewer - Движок проверки и регистрации аварий.
+    TICAlarmChecker - Движок проверки и регистрации аварий.
     }
-    TICAlarmViewer = class(TICAlarmViewerProto)
+    TICAlarmChecker = class(TICAlarmCheckerProto)
     private
       { Признак запущеной обработки тика }
       FIsTick: Boolean;
@@ -176,7 +176,7 @@ type
 
 var
   { Режим тестирования службы }
-  // TEST_SERVICE_MODE: Boolean = False;
+   TEST_SERVICE_MODE: Boolean = False;
 
   { Интервал таймера обработки в миллисекундах }
   //TIMER_TICK: Integer = 1000;
@@ -188,7 +188,7 @@ var
   Переменные определенные в секции implementation являются статическими для
   модуля.
   }
-  PRG_ENGINE: TICAlarmViewer;
+  PRG_ENGINE: TICAlarmChecker;
 
 
 implementation
@@ -196,7 +196,7 @@ implementation
 uses
   log, reg_data_ctrl, strfunc, memfunc;
 
-constructor TICAlarmViewerProto.Create(TheOwner: TComponent);
+constructor TICAlarmCheckerProto.Create(TheOwner: TComponent);
 begin
   inherited Create;
 
@@ -205,14 +205,14 @@ begin
 
   // Словарь зарегистрированных объектов
   FSources := TStrDictionary.Create;
-  FDestinations := nil;
+  FDestinations := TStrDictionary.Create;
 
   //
   FRunning := False;
 
 end;
 
-destructor TICAlarmViewerProto.Destroy;
+destructor TICAlarmCheckerProto.Destroy;
 begin
   DestroySources();
   DestroyDestinations();
@@ -228,7 +228,7 @@ end;
 Проинициализировать конфигурационные переменные в соответствии с настройками.
 @return True/False
 }
-function TICAlarmViewerProto.InitSettings():Boolean;
+function TICAlarmCheckerProto.InitSettings():Boolean;
 var
   ini_filename: AnsiString;
 begin
@@ -254,7 +254,7 @@ end;
 @param Objects: Словарь регистрации объектов.
 @return True -  регистрация прошла успешно / False - ошибка
 }
-function TICAlarmViewerProto.RegObject(Obj: TICObjectProto; Objects: TStrDictionary): Boolean;
+function TICAlarmCheckerProto.RegObject(Obj: TICObjectProto; Objects: TStrDictionary): Boolean;
 var
   name: AnsiString;
 
@@ -273,13 +273,13 @@ begin
 end;
 
 {Регистрация объекта-источника данных}
-function TICAlarmViewerProto.RegSource(Obj: TICObjectProto): Boolean;
+function TICAlarmCheckerProto.RegSource(Obj: TICObjectProto): Boolean;
 begin
   Result := RegObject(Obj, FSources);
 end;
 
 {Регистрация объекта-получателя данных}
-function TICAlarmViewerProto.RegDestination(Obj: TICObjectProto): Boolean;
+function TICAlarmCheckerProto.RegDestination(Obj: TICObjectProto): Boolean;
 begin
   Result := RegObject(Obj, FDestinations);
 end;
@@ -287,7 +287,7 @@ end;
 {
 Поиск объекта в зарегистрированных по имени.
 }
-function TICAlarmViewerProto.FindObject(sObjName: AnsiString; Objects: TStrDictionary): TICObjectProto;
+function TICAlarmCheckerProto.FindObject(sObjName: AnsiString; Objects: TStrDictionary): TICObjectProto;
 begin
   if Objects.HasKey(sObjName) then
     Result := Objects.GetByName(sObjName) As TICObjectProto
@@ -299,13 +299,13 @@ begin
 end;
 
 { Поиск объекта-источника данных }
-function TICAlarmViewerProto.FindSource(sObjName: AnsiString): TICObjectProto;
+function TICAlarmCheckerProto.FindSource(sObjName: AnsiString): TICObjectProto;
 begin
   Result := FindObject(sObjName, FSources);
 end;
 
 { Поиск объекта-получателя данных }
-function TICAlarmViewerProto.FindDestination(sObjName: AnsiString): TICObjectProto;
+function TICAlarmCheckerProto.FindDestination(sObjName: AnsiString): TICObjectProto;
 begin
   Result := FindObject(sObjName, FDestinations);
 end;
@@ -315,7 +315,7 @@ end;
 @param (Properties  Словарь свойств контроллера данных)
 @return (Объект контроллера данных или nil в случае ошибки)
 }
-function TICAlarmViewerProto.CreateDataCtrl(Properties: TStrDictionary): TICObjectProto;
+function TICAlarmCheckerProto.CreateDataCtrl(Properties: TStrDictionary): TICObjectProto;
 var
   type_name, name: AnsiString;
   ctrl_obj: TICObjectProto;
@@ -336,7 +336,7 @@ begin
   else
   begin
     name := Properties.GetStrValue('name');
-    log.ErrorMsgFmt('Ошибка создания объекта источника данных. Не определен тип объекта <%s>', [name]);
+    log.ErrorMsgFmt('Ошибка создания объекта данных. Не определен тип объекта <%s>', [name]);
   end;
   Result := nil;
 end;
@@ -344,7 +344,7 @@ end;
 {
 Создание объектов-источников данных по именам
 }
-function TICAlarmViewerProto.CreateSources(ObjectNames: TStringList): Boolean;
+function TICAlarmCheckerProto.CreateSources(ObjectNames: TStringList): Boolean;
 var
   //ctrl_objects: TList;
   obj: TICObjectProto;
@@ -365,19 +365,26 @@ begin
     is_obj_names_options := True;
   end;
 
-  for i := 0 to ObjectNames.Count - 1 do
+  if ObjectNames.Count > 0 then
   begin
-    obj_properties := FSettingsManager.BuildSection(ObjectNames[i]);
-
-    // Создаем объекты источников данных
-    obj := CreateDataCtrl(obj_properties);
-    if obj <> nil then
+    for i := 0 to ObjectNames.Count - 1 do
     begin
-      // Регистрируем новый объект в словаре внутренних объектов
-      RegSource(obj);
-    end;
+      if IsEmptyStr(ObjectNames[i]) then
+         continue;
 
-  end;
+      obj_properties := FSettingsManager.BuildSection(ObjectNames[i]);
+
+      // Создаем объекты источников данных
+      obj := CreateDataCtrl(obj_properties);
+      if obj <> nil then
+      begin
+        // Регистрируем новый объект в словаре внутренних объектов
+        RegSource(obj);
+      end;
+    end;
+  end
+  else
+    log.WarningMsg('Не определен список объектов-источников');
 
   // Освободить память если мы выделяли
   if is_obj_names_options then
@@ -389,7 +396,7 @@ end;
 {
 Создание объектов-получателей данных по именам
 }
-function TICAlarmViewerProto.CreateDestinations(ObjectNames: TStringList): Boolean;
+function TICAlarmCheckerProto.CreateDestinations(ObjectNames: TStringList): Boolean;
 var
   obj: TICObjectProto;
   obj_names_str: AnsiString;
@@ -409,19 +416,26 @@ begin
     is_obj_names_options := True;
   end;
 
-  for i := 0 to ObjectNames.Count - 1 do
+  if ObjectNames.Count > 0 then
   begin
-    obj_properties := FSettingsManager.BuildSection(ObjectNames[i]);
-
-    // Создаем объекты получателей данных
-    obj := CreateDataCtrl(obj_properties);
-    if obj <> nil then
+    for i := 0 to ObjectNames.Count - 1 do
     begin
-      // Регистрируем новый объект в словаре внутренних объектов
-      RegDestination(obj);
-    end;
+      if IsEmptyStr(ObjectNames[i]) then
+         continue;
 
-  end;
+      obj_properties := FSettingsManager.BuildSection(ObjectNames[i]);
+
+      // Создаем объекты получателей данных
+      obj := CreateDataCtrl(obj_properties);
+      if obj <> nil then
+      begin
+        // Регистрируем новый объект в словаре внутренних объектов
+        RegDestination(obj);
+      end;
+    end;
+  end
+  else
+    log.WarningMsg('Не определен список объектов-получателей');
 
   // Освободить память если мы выделяли
   if is_obj_names_options then
@@ -434,7 +448,7 @@ end;
 Удаление объектов-источников данных
 @return True/False
 }
-function TICAlarmViewerProto.DestroySources(): Boolean;
+function TICAlarmCheckerProto.DestroySources(): Boolean;
 begin
   Result := False;
   if FSources <> nil then
@@ -449,7 +463,7 @@ end;
 Удаление объектов-источников данных
 @return True/False
 }
-function TICAlarmViewerProto.DestroyDestinations(): Boolean;
+function TICAlarmCheckerProto.DestroyDestinations(): Boolean;
 begin
   Result := False;
   if FDestinations <> nil then
@@ -461,7 +475,7 @@ begin
 end;
 
 { Получить состояние тега источника данных в виде строки }
-function TICAlarmViewerProto.GetSourceStateAsString(aSourceName, aTag: AnsiString): AnsiString;
+function TICAlarmCheckerProto.GetSourceStateAsString(aSourceName, aTag: AnsiString): AnsiString;
 var
   src: TICObjectProto;
 begin
@@ -481,7 +495,7 @@ end;
         Список составляется следующим способом:
         ['дата-время', 'значение тега', ....]
 }
-function TICAlarmViewerProto.GetSourceTimeStateAsList(aSourceName, aTag: AnsiString): TMemVectorOfString;
+function TICAlarmCheckerProto.GetSourceTimeStateAsList(aSourceName, aTag: AnsiString): TMemVectorOfString;
 var
   src: TICObjectProto;
   i: Integer;
@@ -520,19 +534,19 @@ begin
     Result.Clear;
 end;
 
-constructor TICAlarmViewer.Create(TheOwner: TComponent);
+constructor TICAlarmChecker.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
   FIsTick := False;
 end;
 
-destructor TICAlarmViewer.Destroy;
+destructor TICAlarmChecker.Destroy;
 begin
   inherited Destroy;
 end;
 
 { Прочитать значение из источника данных }
-function TICAlarmViewer.ReadValueAsString(sSrcTypeName: AnsiString; const aArgs: Array Of Const; sAddress: AnsiString): AnsiString;
+function TICAlarmChecker.ReadValueAsString(sSrcTypeName: AnsiString; const aArgs: Array Of Const; sAddress: AnsiString): AnsiString;
 var
   ctrl_obj: TICObjectProto;
   str_list: TStringList;
@@ -556,7 +570,7 @@ begin
 end;
 
 { Прочитать список значений из источника данных }
-function TICAlarmViewer.ReadValuesAsStrings(sSrcTypeName: AnsiString; const aArgs: Array Of Const; aAddresses: Array Of String): TStringList;
+function TICAlarmChecker.ReadValuesAsStrings(sSrcTypeName: AnsiString; const aArgs: Array Of Const; aAddresses: Array Of String): TStringList;
 var
   ctrl_obj: TICObjectProto;
   str_list: TStringList;
@@ -579,7 +593,7 @@ begin
 end;
 
 { Запустить движок }
-procedure TICAlarmViewer.Start;
+procedure TICAlarmChecker.Start;
 begin
   log.InfoMsg('Запуск');
 
@@ -597,7 +611,7 @@ begin
 
 end;
 
-procedure TICAlarmViewer.Stop;
+procedure TICAlarmChecker.Stop;
 begin
   FRunning := False;
   // Удаляем объекты
@@ -608,12 +622,12 @@ begin
 end;
 
 { Запустить движок в режиме тестирования }
-procedure TICAlarmViewer.Test;
+procedure TICAlarmChecker.Test;
 begin
   log.InfoMsg('Режим тестирования службы')
 end;
 
-procedure TICAlarmViewer.WorkTick;
+procedure TICAlarmChecker.WorkTick;
 var
   i: Integer;
   source: TICObjectProto;
@@ -680,7 +694,7 @@ begin
   log.InfoMsg('Окончание блока чтения/записи');
 end;
 
-procedure TICAlarmViewer.Tick;
+procedure TICAlarmChecker.Tick;
 begin
   // ВНИМАНИЕ! Проверяем если предыдущий тик еще не закончен,
   // то новый не запускаем
