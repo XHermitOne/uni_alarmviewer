@@ -89,7 +89,7 @@ end;
 implementation
 
 uses
-  log,
+  logfunc,
   //filefunc, memfunc,
   netfunc, dbfunc;
 
@@ -131,17 +131,17 @@ procedure TICAlarmCheckNode.PSScriptCompile(Sender: TPSScript);
 begin
   RegisterDateTimeLibrary_C(Sender.Comp);
 
-  Sender.AddFunction(@log.PrintTxt, 'procedure PrintTxt(sTxt: AnsiString; bNewLine: Boolean)');
-  Sender.AddFunction(@log.DebugMsg, 'procedure DebugMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.DebugMsgFmt, 'procedure DebugMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.ErrorMsg, 'procedure ErrorMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.ErrorMsgFmt, 'procedure ErrorMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.WarningMsg, 'procedure WarningMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.WarningMsgFmt, 'procedure WarningMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.InfoMsg, 'procedure InfoMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.InfoMsgFmt, 'procedure InfoMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.ServiceMsg, 'procedure ServiceMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
-  Sender.AddFunction(@log.ServiceMsgFmt, 'procedure ServiceMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.PrintTxt, 'procedure PrintTxt(sTxt: AnsiString; bNewLine: Boolean)');
+  Sender.AddFunction(@logfunc.DebugMsg, 'procedure DebugMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.DebugMsgFmt, 'procedure DebugMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.ErrorMsg, 'procedure ErrorMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.ErrorMsgFmt, 'procedure ErrorMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.WarningMsg, 'procedure WarningMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.WarningMsgFmt, 'procedure WarningMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.InfoMsg, 'procedure InfoMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.InfoMsgFmt, 'procedure InfoMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.ServiceMsg, 'procedure ServiceMsg(sMsg: AnsiString; bForcePrint: Boolean; bForceLog: Boolean)');
+  Sender.AddFunction(@logfunc.ServiceMsgFmt, 'procedure ServiceMsgFmt(sMsgFmt: AnsiString; const aArgs : Array Of Const; bForcePrint: Boolean; bForceLog: Boolean)');
 
   //Sender.AddFunction(@MWrites, 'procedure Writes(const s: string)');
   //Sender.AddFunction(@MWritedt,'procedure WriteDT(d : TDateTime)');
@@ -159,13 +159,14 @@ begin
   Sender.AddFunction(@netfunc.DoPing, 'function DoPing(sHost: AnsiString): Boolean)');
 
   Sender.AddFunction(@dbfunc.CheckODBCConnection, 'function CheckODBCConnection(aDriver: AnsiString; aDataSourceName: AnsiString): Boolean)');
+  Sender.AddFunction(@dbfunc.ExistsRecordsODBC, 'function ExistsRecordsODBC(aDriver: AnsiString; aDataSourceName: AnsiString; aSQL: AnsiString): Boolean');
 
   //Sender.AddRegisteredVariable('Application', 'TApplication');
 
   //Sender.AddRegisteredVariable('Self', 'TICAlarmCheckNode');
 
   SIRegister_Std(Sender.Comp);
-  SIRegister_Classes(Sender.Comp,true);
+  SIRegister_Classes(Sender.Comp, True);
   //SIRegister_Controls(Sender.Comp);
   //SIRegister_Forms(Sender.Comp);
 end;
@@ -194,22 +195,22 @@ begin
     if FScript.Compile then
     begin
       // Перед проверкой печатаем имя объекта
-      log.PrintTxt(Name + ': ', False);
+      logfunc.PrintTxt(Name + ': ', False);
       if not FScript.Execute then
       begin
-        log.ErrorMsgFmt('Объект <%s>. Ошибка выполнения скрипта определения аварии <%s>', [Name, aScriptTxt]);
-        log.ErrorMsg(FScript.ExecErrorToString);
+        logfunc.ErrorMsgFmt('Объект <%s>. Ошибка выполнения скрипта определения аварии <%s>', [Name, aScriptTxt]);
+        logfunc.ErrorMsg(FScript.ExecErrorToString);
       end
       else
         Result := True;
     end
     else
-      log.ErrorMsgFmt('Объект <%s>. Ошибка компиляции скрипта проверки аварии <%s>', [Name, aScriptTxt]);
+      logfunc.ErrorMsgFmt('Объект <%s>. Ошибка компиляции скрипта проверки аварии <%s>', [Name, aScriptTxt]);
       if FScript.CompilerMessageCount > 0 then
         for i := 0 to FScript.CompilerMessageCount - 1 do
-          log.ErrorMsg(FScript.CompilerErrorToStr(i));
+          logfunc.ErrorMsg(FScript.CompilerErrorToStr(i));
   except
-    log.FatalMsgFmt('Объект <%s>. Ошибка выполнения скрипта определения аварии <%s>', [Name, aScriptTxt]);
+    logfunc.FatalMsgFmt('Объект <%s>. Ошибка выполнения скрипта определения аварии <%s>', [Name, aScriptTxt]);
   end;
 
 end;
@@ -225,7 +226,7 @@ var
   execute_result: Boolean;
 begin
   execute_result := Execute();
-  log.InfoMsgFmt('Объект <%s>. Результат проверки аварии [%s]', [Name, BoolToStr(execute_result)]);
+  logfunc.InfoMsgFmt('Объект <%s>. Результат проверки аварии [%s]', [Name, BoolToStr(execute_result)]);
 
   Result := nil;
 end;

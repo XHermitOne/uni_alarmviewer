@@ -104,7 +104,7 @@ type
 implementation
 
 uses
-  log;
+  logfunc;
 
 
 procedure RaiseException(const s: string);

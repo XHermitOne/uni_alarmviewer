@@ -68,7 +68,7 @@ type
 implementation
 
 uses
-  log;
+  logfunc;
 
 {
 Принудительно установить длину записи
@@ -105,7 +105,7 @@ begin
   for i := 0 to Count - 1 do
   begin
     point := GetPoint(i);
-    log.ServiceMsgFmt('Точка вектора <%s : %s>', [point.datetime, point.value]);
+    logfunc.ServiceMsgFmt('Точка вектора <%s : %s>', [point.datetime, point.value]);
   end;
 end;
 

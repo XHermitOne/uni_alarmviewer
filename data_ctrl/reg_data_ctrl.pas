@@ -40,7 +40,7 @@ function CreateRegDataCtrlArgs(oParent: TObject; sTypeName: AnsiString; const aA
 implementation
 
 uses
-  log,
+  logfunc,
   alarm_check_node;
 
 {
@@ -77,7 +77,7 @@ end;
 function CreateRegDataCtrlArgs(oParent: TObject; sTypeName: AnsiString; const aArgs: Array Of Const): TICObjectProto;
 begin
 
-  log.WarningMsgFmt('Не поддерживаемый тип объекта контроллера данных <%s>', [sTypeName]);
+  logfunc.WarningMsgFmt('Не поддерживаемый тип объекта контроллера данных <%s>', [sTypeName]);
   Result := nil;
 end;
 

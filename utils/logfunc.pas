@@ -66,7 +66,7 @@
 
 47 	белый
 
-Версия: 0.0.9.2
+Версия: 0.1.1.2
 
 ВНИМАНИЕ! Вывод сообщений под Linux проверять только в терминале.
 Только он выводит корректно сообщения.
@@ -76,7 +76,7 @@
 Отладку необходимо производить в таком случае через LOG_MODE.
 }
 
-unit log;
+unit logfunc;
 
 {$mode objfpc}{$H+}
 
@@ -91,7 +91,7 @@ uses
     sysfunc;
 
 const
-  DEFAULT_LOG_FILENAME: AnsiString = 'uni_logger.log';
+  DEFAULT_LOG_FILENAME: AnsiString = 'uni.log';
 
   { Цвета в консоли Linux }
   RED_COLOR_TEXT: AnsiString = Chr($1b) + '[31;1m';       // red
@@ -282,9 +282,9 @@ uses
 }
 function GetDefaultEncoding(): AnsiString;
 begin
-    result := 'utf-8';
-    if sysfunc.IsOSWindows() then
-        result := 'cp1251';
+  Result := 'utf-8';
+  if sysfunc.IsOSWindows() then
+    result := 'cp1251';
 end;
 
 {
@@ -292,10 +292,7 @@ end;
 }
 function GetDebugMode(): Boolean;
 begin
-  if DEBUG_MODE then
-    Result := True
-  else
-    Result := False;
+  Result := DEBUG_MODE;
 end;
 
 {
@@ -393,14 +390,11 @@ end;
 @param bNewLine Произвести перевод строки?
 }
 procedure PrintTxt(sTxt: AnsiString; bNewLine: Boolean = True);
-var
-    str_txt: AnsiString;
 begin
-    str_txt := EncodeUnicodeString(sTxt, GetDefaultEncoding());
     if bNewLine then
-      WriteLn(str_txt)
+      WriteLn(stdout, sTxt)
     else
-      Write(str_txt);
+      Write(stdout, sTxt);
 end;
 
 {

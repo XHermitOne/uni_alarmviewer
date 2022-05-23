@@ -59,7 +59,7 @@ var
 implementation
 
 uses
-  log;
+  logfunc;
 
 constructor TMemoryStatus.Create();
 begin
@@ -99,17 +99,17 @@ var
 begin
   lost_memory := GetLost();
   if lost_memory > 0 then
-    log.WarningMsg(Format('Обнаружена утечка памяти <%d>', [lost_memory]), True)
+    logfunc.WarningMsg(Format('Обнаружена утечка памяти <%d>', [lost_memory]), True)
   else if lost_memory < 0 then
-    log.WarningMsg(Format('Обнаружено освобождение памяти <%d>', [lost_memory]), True)
+    logfunc.WarningMsg(Format('Обнаружено освобождение памяти <%d>', [lost_memory]), True)
   else
-    log.ServiceMsg('Утечек памяти не обнаружено', True);
+    logfunc.ServiceMsg('Утечек памяти не обнаружено', True);
 end;
 
 { Инициализировать состояние памяти на данный момент }
 function InitStatusMemory(): Boolean;
 begin
-  log.InfoMsgFmt('Создание глобального объекта состояния памяти. Память [%d]', [GetHeapStatus().TotalAllocated]);
+  logfunc.InfoMsgFmt('Создание глобального объекта состояния памяти. Память [%d]', [GetHeapStatus().TotalAllocated]);
 
   Result := False;
   if GlobMemoryStatus = nil then
@@ -138,11 +138,11 @@ begin
        GlobMemoryStatus.Destroy();
        GlobMemoryStatus := nil;
 
-       log.InfoMsgFmt('Удаление глобального объекта состояния памяти. Память [%d]', [GetHeapStatus().TotalAllocated]);
+       logfunc.InfoMsgFmt('Удаление глобального объекта состояния памяти. Память [%d]', [GetHeapStatus().TotalAllocated]);
     end;
   end
   else
-    log.WarningMsg('Не определен глобальный объект состояния памяти');
+    logfunc.WarningMsg('Не определен глобальный объект состояния памяти');
 end;
 
 end.

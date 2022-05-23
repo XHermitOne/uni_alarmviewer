@@ -194,7 +194,7 @@ var
 implementation
 
 uses
-  log, reg_data_ctrl, strfunc, memfunc;
+  logfunc, reg_data_ctrl, strfunc, memfunc;
 
 constructor TICAlarmCheckerProto.Create(TheOwner: TComponent);
 begin
@@ -232,14 +232,14 @@ function TICAlarmCheckerProto.InitSettings():Boolean;
 var
   ini_filename: AnsiString;
 begin
-  log.InfoMsg('Настройка...');
+  logfunc.InfoMsg('Настройка...');
 
   ini_filename := FSettingsManager.GenIniFileName();
 
-  log.DebugMsgFmt('INI Файл <%s>', [ini_filename]);
+  logfunc.DebugMsgFmt('INI Файл <%s>', [ini_filename]);
   if (ini_filename <> '') and (not FileExists(ini_filename)) then
   begin
-    log.WarningMsgFmt('Файл настроек <%s> не найден. Используется файл настроек по умолчанию', [ini_filename]);
+    logfunc.WarningMsgFmt('Файл настроек <%s> не найден. Используется файл настроек по умолчанию', [ini_filename]);
     ini_filename := '';
   end;
   Result := FSettingsManager.LoadSettings(ini_filename);
@@ -268,7 +268,7 @@ begin
     Exit;
   end
   else
-    log.WarningMsgFmt('Не возможно зарегистрировать объект класса <%s>', [Obj.ClassName]);
+    logfunc.WarningMsgFmt('Не возможно зарегистрировать объект класса <%s>', [Obj.ClassName]);
   Result := False;
 end;
 
@@ -293,7 +293,7 @@ begin
     Result := Objects.GetByName(sObjName) As TICObjectProto
   else
   begin
-    log.WarningMsgFmt('Объект <%s> не найден среди зарегистрированных %s', [sObjName, Objects.GetKeysStr()]);
+    logfunc.WarningMsgFmt('Объект <%s> не найден среди зарегистрированных %s', [sObjName, Objects.GetKeysStr()]);
     Result := nil;
   end;
 end;
@@ -325,7 +325,7 @@ begin
   begin
     type_name := Properties.GetStrValue('type');
     name := Properties.GetStrValue('name');
-    log.InfoMsgFmt('Создание объекта <%s> : <%s>', [name, type_name]);
+    logfunc.InfoMsgFmt('Создание объекта <%s> : <%s>', [name, type_name]);
     ctrl_obj := reg_data_ctrl.CreateRegDataCtrl(self, type_name, Properties);
     if ctrl_obj <> nil then
       begin
@@ -336,7 +336,7 @@ begin
   else
   begin
     name := Properties.GetStrValue('name');
-    log.ErrorMsgFmt('Ошибка создания объекта данных. Не определен тип объекта <%s>', [name]);
+    logfunc.ErrorMsgFmt('Ошибка создания объекта данных. Не определен тип объекта <%s>', [name]);
   end;
   Result := nil;
 end;
@@ -355,7 +355,7 @@ var
 
 begin
   Result := False;
-  log.InfoMsg('Создание объектов-источников...');
+  logfunc.InfoMsg('Создание объектов-источников...');
 
   is_obj_names_options := False;
   if ObjectNames = nil then
@@ -384,7 +384,7 @@ begin
     end;
   end
   else
-    log.WarningMsg('Не определен список объектов-источников');
+    logfunc.WarningMsg('Не определен список объектов-источников');
 
   // Освободить память если мы выделяли
   if is_obj_names_options then
@@ -406,7 +406,7 @@ var
 
 begin
   Result := False;
-  log.InfoMsg('Создание объектов-получателей...');
+  logfunc.InfoMsg('Создание объектов-получателей...');
 
   is_obj_names_options := False;
   if ObjectNames = nil then
@@ -435,7 +435,7 @@ begin
     end;
   end
   else
-    log.WarningMsg('Не определен список объектов-получателей');
+    logfunc.WarningMsg('Не определен список объектов-получателей');
 
   // Освободить память если мы выделяли
   if is_obj_names_options then
@@ -521,12 +521,12 @@ begin
         //Result.Add(new_point);
         value := state.GetStrValue(aTag);
         Result.AddNewPoint(str_datetime, value);
-        //log.DebugMsgFmt('Источник <%s>. Тег <%s>. Добавлена точка <%s : %s>', [aSourceName, aTag, str_datetime, value]);
+        //logfunc.DebugMsgFmt('Источник <%s>. Тег <%s>. Добавлена точка <%s : %s>', [aSourceName, aTag, str_datetime, value]);
         //new_point := nil;
       end;
       // Result.PrintPoints();
     except
-      log.FatalMsgFmt('Ошибка получения списка состояний тега <%s> из буфера объекта <%s>', [aTag, aSourceName]);
+      logfunc.FatalMsgFmt('Ошибка получения списка состояний тега <%s> из буфера объекта <%s>', [aTag, aSourceName]);
       Result.Clear;
     end;
   end
@@ -560,7 +560,7 @@ begin
     str_list := ctrl_obj.ReadAddresses([sAddress]);
     Result := str_list.Strings[0];
   except
-    log.FatalMsgFmt('Ошибка чтения значения по адресу <%s>', [sAddress]);
+    logfunc.FatalMsgFmt('Ошибка чтения значения по адресу <%s>', [sAddress]);
   end;
 
   if str_list <> nil then
@@ -585,7 +585,7 @@ begin
     str_list := ctrl_obj.ReadAddresses(aAddresses);
     Result := str_list;
   except
-    log.FatalMsg('Ошибка чтения значений по адресам:');
+    logfunc.FatalMsg('Ошибка чтения значений по адресам:');
   end;
 
   if ctrl_obj <> nil then
@@ -595,7 +595,7 @@ end;
 { Запустить движок }
 procedure TICAlarmChecker.Start;
 begin
-  log.InfoMsg('Запуск');
+  logfunc.InfoMsg('Запуск');
 
   // Загрузить данные из настроечного файла
   if InitSettings() then
@@ -607,7 +607,7 @@ begin
     FRunning := True;
   end
   else
-    log.ErrorMsg('Ошибка загрузки данных настройки');
+    logfunc.ErrorMsg('Ошибка загрузки данных настройки');
 
 end;
 
@@ -618,13 +618,13 @@ begin
   DestroySources();
   DestroyDestinations();
 
-  log.InfoMsg('Останов');
+  logfunc.InfoMsg('Останов');
 end;
 
 { Запустить движок в режиме тестирования }
 procedure TICAlarmChecker.Test;
 begin
-  log.InfoMsg('Режим тестирования службы')
+  logfunc.InfoMsg('Режим тестирования службы')
 end;
 
 procedure TICAlarmChecker.WorkTick;
@@ -636,18 +636,18 @@ var
   key: AnsiString;
   values: TStringList;
 begin
-  log.InfoMsg('Начало блока чтения/записи');
+  logfunc.InfoMsg('Начало блока чтения/записи');
 
   // Сначала читаем значения источников данных
   try
     keys := FSources.GetKeys();
-    log.DebugMsgFmt('Всего источников данных <%d>', [keys.Count]);
+    logfunc.DebugMsgFmt('Всего источников данных <%d>', [keys.Count]);
     for i := 0 to keys.Count - 1 do
     begin
       key := FSources.GetKey(i);
-      log.DebugMsgFmt('Чтение данных из источника <%s>', [key]);
+      logfunc.DebugMsgFmt('Чтение данных из источника <%s>', [key]);
       source := FSources.GetByName(key) As TICObjectProto;
-      log.DebugMsg('Чтение всех данных');
+      logfunc.DebugMsg('Чтение всех данных');
 
       values := source.ReadAll();
       if values <> nil then
@@ -656,13 +656,13 @@ begin
     end;
     keys.Destroy();
   except
-    log.FatalMsg('Ошибка чтения из источников данных');
+    logfunc.FatalMsg('Ошибка чтения из источников данных');
   end;
 
   // Затем производим запись данных в объекты получатели данных
   try
     keys := FDestinations.GetKeys();
-    log.DebugMsgFmt('Всего приемников данных <%d>', [keys.Count]);
+    logfunc.DebugMsgFmt('Всего приемников данных <%d>', [keys.Count]);
     for i := 0 to keys.Count - 1 do
     begin
       key := FDestinations.GetKey(i);
@@ -671,7 +671,7 @@ begin
     end;
     keys.Destroy();
   except
-    log.FatalMsg('Ошибка записи данных в объекты-получатели');
+    logfunc.FatalMsg('Ошибка записи данных в объекты-получатели');
   end;
 
   // Очистка состояний источников данных
@@ -680,7 +680,7 @@ begin
     for i := 0 to keys.Count - 1 do
     begin
       key := FSources.GetKey(i);
-      log.DebugMsgFmt('Очистка состояний источника данных <%s>', [key]);
+      logfunc.DebugMsgFmt('Очистка состояний источника данных <%s>', [key]);
       source := FSources.GetByName(key) As TICObjectProto;
       source.ClearTimeState();
       source.ClearState();
@@ -688,10 +688,10 @@ begin
     end;
     keys.Destroy();
   except
-    log.FatalMsg('Ошибка чтения из источников данных');
+    logfunc.FatalMsg('Ошибка чтения из источников данных');
   end;
 
-  log.InfoMsg('Окончание блока чтения/записи');
+  logfunc.InfoMsg('Окончание блока чтения/записи');
 end;
 
 procedure TICAlarmChecker.Tick;
@@ -700,7 +700,7 @@ begin
   // то новый не запускаем
   if FIsTick then
   begin
-    log.WarningMsgFmt('Пропущена обработка тика в %s', [FormatDateTime('c', Now())]);
+    logfunc.WarningMsgFmt('Пропущена обработка тика в %s', [FormatDateTime('c', Now())]);
     Exit;
   end;
 
@@ -715,7 +715,7 @@ begin
 
     WorkTick;
 
-    //if log.DEBUG_MODE then
+    //if logfunc.DEBUG_MODE then
     //  memfunc.PrintLostMemory();
   end;
 

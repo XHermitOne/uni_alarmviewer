@@ -64,7 +64,7 @@ function FileTimeToDateTime(const ftFileTime: TFileTime): TDateTime;
 implementation
 
 uses
-  log;
+  logfunc;
 
 {
 Определить папку домашней директории
@@ -77,7 +77,7 @@ begin
   else if IsOSWindows() then
     Result := GetOSWindowsHomeDir()
   else
-    log.WarningMsgFmt('Не поддерживаемая ОС <%s>', [GetOSType()]);
+    logfunc.WarningMsgFmt('Не поддерживаемая ОС <%s>', [GetOSType()]);
 end;
 
 {
@@ -131,7 +131,7 @@ begin
 
   if not DirectoryExists(sPath) then
   begin
-     log.InfoMsgFmt('Создание папки <%s>', [sPath]);
+     logfunc.InfoMsgFmt('Создание папки <%s>', [sPath]);
      Result := CreateDirPathTree(sPath);
   end;
 end;
@@ -165,7 +165,7 @@ begin
   // Нормализация пути
   sPath := NormalPathFileName(sPath);
 
-  log.InfoMsgFmt('Создание пустого файла <%s>', [sPath]);
+  logfunc.InfoMsgFmt('Создание пустого файла <%s>', [sPath]);
   AssignFile(file_tmp, sPath);
   try
     Rewrite(file_tmp);
@@ -213,13 +213,13 @@ begin
   Result := '';
   if sTxtFileName = '' then
   begin
-    log.WarningMsg('Не определен текстовый файл');
+    logfunc.WarningMsg('Не определен текстовый файл');
     Exit;
   end;
 
   if not FileExists(sTxtFileName) then
   begin
-    log.WarningMsgFmt('Текстовый файл <%s> не найден', [sTxtFileName]);
+    logfunc.WarningMsgFmt('Текстовый файл <%s> не найден', [sTxtFileName]);
     Exit;
   end;
 
@@ -236,7 +236,7 @@ begin
     Close(txt_file);
   except
     Close(txt_file);
-    log.FatalMsgFmt('Ошибка чтения файла <%s>', [sTxtFileName]);
+    logfunc.FatalMsgFmt('Ошибка чтения файла <%s>', [sTxtFileName]);
     Result := '';
   end;
 end;
@@ -253,13 +253,13 @@ begin
   Result.dwLowDateTime  := 0;
   Result.dwHighDateTime := 0;
   DateTimeToSystemTime(dtFileTime, SystemTime);
-  //log.DebugMsgFmt('System time: %d-%d-%d %d:%d:%d.%d', [SystemTime.Year, SystemTime.Month, SystemTime.Day,
+  //logfunc.DebugMsgFmt('System time: %d-%d-%d %d:%d:%d.%d', [SystemTime.Year, SystemTime.Month, SystemTime.Day,
   //                                                     SystemTime.Hour, SystemTime.Minute, SystemTime.Second, SystemTime.Millisecond]);
   SystemTimeToFileTime(SystemTime, LocalFileTime);
-  //log.DebugMsgFmt('Local file time: %s', [FormatDateTime('YYYY-MM-DD HH:NN:SS', FileTimeToDateTime(LocalFileTime))]);
+  //logfunc.DebugMsgFmt('Local file time: %s', [FormatDateTime('YYYY-MM-DD HH:NN:SS', FileTimeToDateTime(LocalFileTime))]);
   // Перевод к времени по гринвичу:
   //LocalFileTimeToFileTime(LocalFileTime, Ft);
-  //log.DebugMsgFmt('File time: %s', [FormatDateTime('YYYY-MM-DD HH:NN:SS', FileTimeToDateTime(Ft))]);
+  //logfunc.DebugMsgFmt('File time: %s', [FormatDateTime('YYYY-MM-DD HH:NN:SS', FileTimeToDateTime(Ft))]);
   Result := LocalFileTime;
 end;
 {$ENDIF}

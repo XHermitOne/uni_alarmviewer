@@ -173,7 +173,7 @@ end;
 implementation
 
 uses
-  log, memfunc;
+  logfunc, memfunc;
 
 constructor TICObjectProto.Create;
 begin
@@ -276,7 +276,7 @@ begin
   if FProperties.HasKey('name') then
     SetName(FProperties.GetStrValue('name'))
   else
-    log.WarningMsgFmt('Не определено имя объекта в свойствах. Класс <%s>', [ClassName]);
+    logfunc.WarningMsgFmt('Не определено имя объекта в свойствах. Класс <%s>', [ClassName]);
 end;
 
 {
@@ -321,7 +321,7 @@ end;
 }
 function TICObjectProto.Read(sAddresses: TStringList; dtTime: TDateTime): TStringList;
 begin
-  log.WarningMsgFmt('Вызов не определенного метода Read объекта <%s>', [FName]);
+  logfunc.WarningMsgFmt('Вызов не определенного метода Read объекта <%s>', [FName]);
   Result := nil;
 end;
 
@@ -334,7 +334,7 @@ end;
 }
 function TICObjectProto.ReadAddresses(sAddresses: Array Of String; dtTime: TDateTime): TStringList;
 begin
-  log.WarningMsgFmt('Вызов не определенного метода ReadAddresses объекта <%s>', [FName]);
+  logfunc.WarningMsgFmt('Вызов не определенного метода ReadAddresses объекта <%s>', [FName]);
   Result := nil;
 end;
 
@@ -347,7 +347,7 @@ end;
 }
 function TICObjectProto.ReadAddress(sAddress: AnsiString; dtTime: TDateTime): AnsiString;
 begin
-  log.WarningMsgFmt('Вызов не определенного метода ReadAddress объекта <%s>', [FName]);
+  logfunc.WarningMsgFmt('Вызов не определенного метода ReadAddress объекта <%s>', [FName]);
   Result := '';
 end;
 
@@ -359,7 +359,7 @@ end;
 }
 function TICObjectProto.ReadAll(dtTime: TDateTime): TStringList;
 begin
-  log.WarningMsgFmt('Вызов не определенного метода ReadAll объекта <%s>', [FName]);
+  logfunc.WarningMsgFmt('Вызов не определенного метода ReadAll объекта <%s>', [FName]);
   Result := nil;
 end;
 
@@ -373,7 +373,7 @@ end;
 }
 function TICObjectProto.Write(sAddresses, aValues: TStringList; dtTime: TDateTime): Boolean;
 begin
-  log.WarningMsgFmt('Вызов не определенного метода Write объекта <%s>', [FName]);
+  logfunc.WarningMsgFmt('Вызов не определенного метода Write объекта <%s>', [FName]);
   Result := False;
 end;
 
@@ -387,7 +387,7 @@ end;
 }
 function TICObjectProto.WriteAddresses(sAddresses,aValues: Array Of String; dtTime: TDateTime): Boolean;
 begin
-  log.WarningMsgFmt('Вызов не определенного метода WriteAddresses объекта <%s>', [FName]);
+  logfunc.WarningMsgFmt('Вызов не определенного метода WriteAddresses объекта <%s>', [FName]);
   Result := False;
 end;
 
@@ -401,7 +401,7 @@ end;
 }
 function TICObjectProto.WriteAddress(sAddress, aValue: AnsiString; dtTime: TDateTime): Boolean;
 begin
-  log.WarningMsgFmt('Вызов не определенного метода WriteAddress объекта <%s>', [FName]);
+  logfunc.WarningMsgFmt('Вызов не определенного метода WriteAddress объекта <%s>', [FName]);
   Result := False;
 end;
 
@@ -413,7 +413,7 @@ end;
 }
 function TICObjectProto.WriteAll(dtTime: TDateTime): Boolean;
 begin
-  log.WarningMsgFmt('Вызов не определенного метода WriteAll объекта <%s>', [FName]);
+  logfunc.WarningMsgFmt('Вызов не определенного метода WriteAll объекта <%s>', [FName]);
   Result := False;
 end;
 

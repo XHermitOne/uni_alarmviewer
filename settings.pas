@@ -100,7 +100,7 @@ var
 implementation
 
 uses
-  filefunc, log;
+  filefunc, logfunc;
 
 constructor TICSettingsManager.Create;
 begin
@@ -130,7 +130,7 @@ begin
 
   FIniFileName := JoinPath([cur_path, SETTINGS_INI_FILENAME]);
 
-  log.DebugMsgFmt('Файл настроек: <%s>', [FIniFileName]);
+  logfunc.DebugMsgFmt('Файл настроек: <%s>', [FIniFileName]);
 
   Result := FIniFileName;
 end;
@@ -149,17 +149,17 @@ var
 begin
   if FIniFileName = '' then
   begin
-    log.WarningMsg('Не определен INI файл настроек для отображения');
+    logfunc.WarningMsg('Не определен INI файл настроек для отображения');
     Exit;
   end;
   if not FileExists(FIniFileName) then
   begin
-    log.WarningMsgFmt('Файл настроек программы <%s> не найден', [FIniFileName]);
+    logfunc.WarningMsgFmt('Файл настроек программы <%s> не найден', [FIniFileName]);
     Exit;
   end;
 
   ini_file := TIniFile.Create(FIniFileName);
-  log.ServiceMsgFmt('Файл настроек программы <%s>:', [FIniFileName]);
+  logfunc.ServiceMsgFmt('Файл настроек программы <%s>:', [FIniFileName]);
   // ВНИМАНИЕ! Перед использованием списков строк в функции
   // надо их создать/выделить под них память
   sections := TStringList.Create;
@@ -170,7 +170,7 @@ begin
       for i_section :=0 to sections.Count - 1 do
       begin
         section_name := sections[i_section];
-        log.ServiceMsgFmt('[%s]', [section_name]);
+        logfunc.ServiceMsgFmt('[%s]', [section_name]);
 
         options.Clear;
         ini_file.ReadSectionValues(section_name, options);
@@ -180,14 +180,14 @@ begin
           if AnsiStartsStr(';', option) then
             // Это коментарий обрабатывать не надо
             continue;
-          log.ServiceMsgFmt(#9'%s', [option]);
+          logfunc.ServiceMsgFmt(#9'%s', [option]);
         end;
       end;
     finally
       ini_file.Free;
     end;
   except
-    log.FatalMsg('Ошибка печати настроек программы');
+    logfunc.FatalMsg('Ошибка печати настроек программы');
   end;
   // ВНИМАНИЕ! В конце обязательно освободить память
   options.Free;
@@ -214,7 +214,7 @@ begin
     if FContent.IsEmpty then
     begin
       Result := False;
-      log.WarningMsgFmt('Не определены настройки в INI файле <%s>' , [sIniFileName]);
+      logfunc.WarningMsgFmt('Не определены настройки в INI файле <%s>' , [sIniFileName]);
     end;
   end;
 end;
@@ -248,7 +248,7 @@ begin
     if obj_section <> nil then
       section.Update(obj_section)
     else
-      log.WarningMsgFmt('Не определена секция <%s> в настройках', [sSectionName]);
+      logfunc.WarningMsgFmt('Не определена секция <%s> в настройках', [sSectionName]);
   end
   else
     section.AddStrValue('name', sSectionName);
@@ -272,7 +272,7 @@ begin
     // Если описание секции с именем указанным в parent нет в INI файле, то
     // удаляем ключ parent из описания секции, сообщаем об ошибке и
     // возвращаем созданную секцию
-    log.WarningMsgFmt('Запрашиваемая секция <%s> как родительская для <%s> не найдена', [section.GetStrValue('parent'), sSectionName]);
+    logfunc.WarningMsgFmt('Запрашиваемая секция <%s> как родительская для <%s> не найдена', [section.GetStrValue('parent'), sSectionName]);
     section.DelItem('parent');
     Result := section;
     Exit;

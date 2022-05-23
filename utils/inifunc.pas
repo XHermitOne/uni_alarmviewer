@@ -65,7 +65,7 @@ type
 implementation
 
 uses
-  log, filefunc, strfunc;
+  logfunc, filefunc, strfunc;
 
 constructor TIniDictionary.Create();
 begin
@@ -105,12 +105,12 @@ begin
   Result := False;
   if sIniFileName = '' then
   begin
-    log.WarningMsg('Не определен INI файл для загрузки данных');
+    logfunc.WarningMsg('Не определен INI файл для загрузки данных');
     Exit;
   end;
   if not FileExists(sIniFileName) then
   begin
-    log.WarningMsgFmt('Файл INI <%s> не найден', [sIniFileName]);
+    logfunc.WarningMsgFmt('Файл INI <%s> не найден', [sIniFileName]);
     Exit;
   end;
 
@@ -149,7 +149,7 @@ begin
           begin
             // Значение опции храниться в отдельном текстовом многострочном файле
             option_value := filefunc.ReadTxtFile(strfunc.ReplaceStart(option_value, MEMO_SIGNATURE, ''));
-            log.DebugMsgFmt('Чтение расширенной настройки <%s> - <%s>', [option_name, option_value]);
+            logfunc.DebugMsgFmt('Чтение расширенной настройки <%s> - <%s>', [option_name, option_value]);
           end;
 
           section_dict.AddStrValue(option_name, option_value);
@@ -161,7 +161,7 @@ begin
       ini_file.Free;
     end;
   except
-    log.FatalMsg('Ошибка загрузки настроек программы');
+    logfunc.FatalMsg('Ошибка загрузки настроек программы');
   end;
   // ВНИМАНИЕ! В конце обязательно освободить память
   option_list.Destroy;
@@ -204,7 +204,7 @@ begin
 
   if sTxtFileName = '' then
   begin
-    log.WarningMsg('Не определен текстовый файл многострочных данных');
+    logfunc.WarningMsg('Не определен текстовый файл многострочных данных');
     Exit;
   end;
 
@@ -214,7 +214,7 @@ begin
 
   if not FileExists(txt_filename) then
   begin
-    log.WarningMsgFmt('Текстовый файл многострочных данных <%s> не найден', [txt_filename]);
+    logfunc.WarningMsgFmt('Текстовый файл многострочных данных <%s> не найден', [txt_filename]);
     Exit;
   end;
 

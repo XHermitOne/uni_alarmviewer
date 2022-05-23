@@ -158,6 +158,12 @@ function ReplaceEnd(sTxt: AnsiString; sSrcStr: AnsiString; sDstStr: AnsiString =
 }
 function IsEmptyStr(sTxt: AnsiString): Boolean;
 
+{
+Распарсить строку, представляющую собой линии строк
+Возврашает список строк.
+}
+function ParseStrLines(sString: AnsiString): TStringList;
+
 implementation
 
 {
@@ -443,6 +449,23 @@ end;
 function IsEmptyStr(sTxt: AnsiString): Boolean;
 begin
   Result := Length(sTxt) = 0;
+end;
+
+{
+Распарсить строку, представляющую собой линии строк
+Возврашает список строк.
+}
+function ParseStrLines(sString: AnsiString): TStringList;
+var
+  str_array: Array Of String;
+  i: Integer;
+  str_lines: TStringList;
+begin
+  str_lines := TStringList.Create;
+  str_array := SplitStr(sString, #13);
+  for i := 0 to Length(str_array) - 1 do
+    str_lines.Add(str_array[i]);
+  Result := str_lines;
 end;
 
 end.

@@ -122,7 +122,7 @@ uses
 
   Classes, SysUtils, CustApp,
   pascalscript,
-  engine, log, settings
+  engine, settings, logfunc
   { you can add units after this };
 
 type
@@ -170,19 +170,19 @@ begin
   end;
 
   if HasOption('d', 'debug') then
-    DEBUG_MODE := True;
+    logfunc.DEBUG_MODE := True;
 
   // Очень странно, но при  отключении режима логирования
   // пропадает ошибка Access violation при  вызове ReadRaw
 
   if HasOption('l', 'log') then
-    LOG_MODE := True;
+    logfunc.LOG_MODE := True;
 
   if HasOption('s', 'settings') then
     settings.SETTINGS_INI_FILENAME := Trim(GetOptionValue('s', 'settings'));
 
-  if LOG_MODE then
-    OpenLog(ChangeFileExt(ParamStr(0), '.log'));
+  if logfunc.LOG_MODE then
+    logfunc.OpenLog(ChangeFileExt(ParamStr(0), '.log'));
 
   { add your program here }
 
@@ -220,19 +220,19 @@ end;
 procedure TUniAlarmCheckerApplication.WriteHelp;
 begin
   { add your help code here }
-  PrintColorTxt('uni_alarmchecker - Программа проверки аварий', CYAN_COLOR_TEXT);
-  PrintColorTxt(Format('Версия: %s', [engine.VERSION]), CYAN_COLOR_TEXT);
-  PrintColorTxt('Парметры коммандной строки:', CYAN_COLOR_TEXT);
-  PrintColorTxt(Format('    Помощь: %s --help', [ExeName]), CYAN_COLOR_TEXT);
-  PrintColorTxt(Format('    Версия программы: %s --version', [ExeName]), CYAN_COLOR_TEXT);
-  PrintColorTxt(Format('    Режим вывода сообщений в консоль: %s --debug', [ExeName]), CYAN_COLOR_TEXT);
-  PrintColorTxt(Format('    Режим вывода сообщений в журнал: %s --log', [ExeName]), CYAN_COLOR_TEXT);
-  PrintColorTxt(Format('    Файл настройки: %s --settings=имя_файла_настройки.ini', [ExeName]), CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt('uni_alarmchecker - Программа проверки аварий', logfunc.CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt(Format('Версия: %s', [engine.VERSION]), logfunc.CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt('Парметры коммандной строки:', logfunc.CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt(Format('    Помощь: %s --help', [ExeName]), logfunc.CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt(Format('    Версия программы: %s --version', [ExeName]), CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt(Format('    Режим вывода сообщений в консоль: %s --debug', [ExeName]), logfunc.CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt(Format('    Режим вывода сообщений в журнал: %s --log', [ExeName]), logfunc.CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt(Format('    Файл настройки: %s --settings=имя_файла_настройки.ini', [ExeName]), logfunc.CYAN_COLOR_TEXT);
 end;
 
 procedure TUniAlarmCheckerApplication.WriteVersion;
 begin
-  PrintColorTxt(Format('uni_alarmchecker. Версия: %s', [engine.VERSION]), CYAN_COLOR_TEXT);
+  logfunc.PrintColorTxt(Format('uni_alarmchecker. Версия: %s', [engine.VERSION]), logfunc.CYAN_COLOR_TEXT);
 end;
 
 var
@@ -241,8 +241,8 @@ var
 {$R *.res}
 
 begin
-  Application:=TUniAlarmCheckerApplication.Create(nil);
-  Application.Title:='UniAlarmChecker';
+  Application := TUniAlarmCheckerApplication.Create(nil);
+  Application.Title := 'UniAlarmChecker';
   Application.Run;
   Application.Free;
 

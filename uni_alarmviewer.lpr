@@ -110,7 +110,7 @@ uses
   {$ENDIF}{$ENDIF}
   SysUtils,
   Interfaces, // this includes the LCL widgetset
-  Forms, pascalscript, alarmviewer
+  Forms, alarmviewer, logfunc
   { you can add units after this };
 
 {$R *.res}

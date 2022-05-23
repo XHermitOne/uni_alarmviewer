@@ -167,7 +167,7 @@ type
 implementation
 
 uses
-  log, memfunc;
+  logfunc, memfunc;
 
 
 constructor TStrDictionary.Create();
@@ -231,7 +231,7 @@ begin
 
   try
     msg := Format('Содержимое <%s : %s>:', [aDictionary.UnitName, aDictionary.ClassName]);
-    log.ServiceMsg(msg);
+    logfunc.ServiceMsg(msg);
 
     for i := 0 to aDictionary.GetCount-1 do
     begin
@@ -251,11 +251,11 @@ begin
         item_class := '<nil>';
 
         msg := Format('    %s  =  %s', [item_name, item_class]);
-        log.ServiceMsg(msg);
+        logfunc.ServiceMsg(msg);
       end;
 
   except
-    log.FatalMsg('Ошибка печати содержания словаря');
+    logfunc.FatalMsg('Ошибка печати содержания словаря');
   end;
 end;
 
@@ -269,15 +269,15 @@ begin
     aDictionary := self;
 
   try
-    log.ServiceMsgFmt('Ключи <%s : %s>:', [UnitName, ClassName]);
+    logfunc.ServiceMsgFmt('Ключи <%s : %s>:', [UnitName, ClassName]);
 
     for i := 0 to GetCount-1 do
     begin
       item_name := Strings[i];
-      log.ServiceMsgFmt('    %s', [item_name]);
+      logfunc.ServiceMsgFmt('    %s', [item_name]);
     end;
   except
-    log.FatalMsg('Ошибка печати ключей словаря');
+    logfunc.FatalMsg('Ошибка печати ключей словаря');
   end;
 end;
 
@@ -291,7 +291,7 @@ begin
   // PrintContent;
   idx := IndexOf(sKey);
   Result := idx >= 0;
-  // log.ServiceMsgFmt('Проверка наличия ключа <%s : %d>', [sKey, idx]);
+  // logfunc.ServiceMsgFmt('Проверка наличия ключа <%s : %d>', [sKey, idx]);
 end;
 
 {
@@ -413,7 +413,7 @@ begin
       begin
         // Добавление строкового объекта
         AddStrValue(key, (obj As TObjString).Value);
-        log.DebugMsgFmt('Добавление ключа <%s>', [key]);
+        logfunc.DebugMsgFmt('Добавление ключа <%s>', [key]);
       end
     else
       //Добавление объекта
