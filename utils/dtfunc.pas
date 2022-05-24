@@ -1,7 +1,7 @@
 {
 Модуль функция работы со временными данными
 
-Версия: 0.0.2.2
+Версия: 0.0.2.3
 }
 
 unit dtfunc;
@@ -16,6 +16,9 @@ uses
   Classes, SysUtils, DateUtils, SysConst;
 
 const
+  { Шаблон по умолчанию }
+  DEFAULT_DATETIME_FMT: AnsiString = 'yyyy-mm-dd hh:nn:ss';
+
   { Шаблон по умолчанию }
   DEFAULT_DT_DELTA_FMT: AnsiString = 'yyyy-mm-dd hh:nn:ss';
   { Разделитель даты }
@@ -440,11 +443,11 @@ var
   ResultLen: integer;
   ResultBuffer: array[0..255] of char;
   ResultCurrent: pchar;
-{$IFDEF MSWindows}
-  isEnable_E_Format : Boolean;
-  isEnable_G_Format : Boolean;
-  eastasiainited : boolean;
-{$ENDIF MSWindows}
+//{$IFDEF MSWindows}
+//  isEnable_E_Format : Boolean;
+//  isEnable_G_Format : Boolean;
+//  eastasiainited : boolean;
+//{$ENDIF MSWindows}
 
 {$IFDEF MSWindows}
   procedure InitEastAsia;
@@ -462,21 +465,21 @@ var
           PriLangID := SysLocale.PriLangID;
           SubLangID := SysLocale.SubLangID;
         end;
-    isEnable_E_Format := (PriLangID = LANG_JAPANESE)
-                  or
-                  (PriLangID = LANG_KOREAN)
-                  or
-                  ((PriLangID = LANG_CHINESE)
-                   and
-                   (SubLangID = SUBLANG_CHINESE_TRADITIONAL)
-                  );
-    isEnable_G_Format := (PriLangID = LANG_JAPANESE)
-                  or
-                  ((PriLangID = LANG_CHINESE)
-                   and
-                   (SubLangID = SUBLANG_CHINESE_TRADITIONAL)
-                  );
-    eastasiainited :=true;
+    //isEnable_E_Format := (PriLangID = LANG_JAPANESE)
+    //              or
+    //              (PriLangID = LANG_KOREAN)
+    //              or
+    //              ((PriLangID = LANG_CHINESE)
+    //               and
+    //               (SubLangID = SUBLANG_CHINESE_TRADITIONAL)
+    //              );
+    //isEnable_G_Format := (PriLangID = LANG_JAPANESE)
+    //              or
+    //              ((PriLangID = LANG_CHINESE)
+    //               and
+    //               (SubLangID = SUBLANG_CHINESE_TRADITIONAL)
+    //              );
+    //eastasiainited :=true;
   end;
 {$ENDIF MSWindows}
 
@@ -520,7 +523,7 @@ var
 
 var
   Year, Month, Day, DayOfWeek, Hour, Minute, Second, MilliSecond: word;
-  DT : TDateTime;
+  //DT : TDateTime;
 
   procedure StoreFormat(const FormatStr: string; Nesting: Integer; TimeFlag: Boolean);
   var
@@ -758,9 +761,9 @@ var
   end;
 
 begin
-{$ifdef MSWindows}
-  eastasiainited:=false;
-{$endif MSWindows}
+//{$ifdef MSWindows}
+//  eastasiainited:=false;
+//{$endif MSWindows}
 
 Year := FYear;
   Month := FMonth;

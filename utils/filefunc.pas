@@ -1,7 +1,7 @@
 {
 Функции работы с файлами.
 
-Версия: 0.0.2.1
+Версия: 0.0.3.1
 }
 unit filefunc;
 
@@ -14,7 +14,10 @@ uses
   Windows,
   {$ENDIF}
   Classes, SysUtils,
-  sysfunc, strfunc, exttypes;
+  LazFileUtils,
+  sysfunc,
+  strfunc,
+  exttypes;
 
 { Определить папку домашней директории }
 function GetHomeDir(): AnsiString;
@@ -60,6 +63,13 @@ function DateTimeToFileTime(dtFileTime: TDateTime): TFileTime;
 {$IFDEF windows}
 function FileTimeToDateTime(const ftFileTime: TFileTime): TDateTime;
 {$ENDIF}
+
+
+{ Определить полный путь до папки }
+function GetDirName(aPath: AnsiString): AnsiString;
+
+{ Определить базовое имя файла }
+function GetBaseName(aPath: AnsiString): AnsiString;
 
 implementation
 
@@ -274,6 +284,18 @@ begin
   Result := Result + FileTimeBase;
 end;
 {$ENDIF}
+
+{ Определить полный путь до папки }
+function GetDirName(aPath: AnsiString): AnsiString;
+begin
+  Result := ExtractFilePath(aPath);
+end;
+
+{ Определить базовое имя файла }
+function GetBaseName(aPath: AnsiString): AnsiString;
+begin
+  Result := ExtractFileNameOnly(aPath) + ExtractFileExt(aPath);
+end;
 
 end.
 

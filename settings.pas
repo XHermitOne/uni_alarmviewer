@@ -1,7 +1,7 @@
 {
 Модуль поддержки настроек программы
 
-Версия: 0.0.3.1
+Версия: 0.0.3.2
 }
 unit settings;
 
@@ -377,6 +377,7 @@ var
   option_names: TStringList;
   section: TStrDictionary;
 begin
+  Result := [];
 
   if FContent.HasKey(sSectionName) then
   begin
@@ -404,6 +405,7 @@ var
   i: Integer;
   section_names: TStringList;
 begin
+  Result := [];
   section_names := FContent.GetKeys();
 
   SetLength(Result, section_names.Count);
