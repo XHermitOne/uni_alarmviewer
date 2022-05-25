@@ -1,0 +1,14 @@
+begin 
+  if not ExistsRecordsODBC('MySQL ODBC 8.0 Unicode Driver', 'KIP_DB', 
+   'SELECT EXISTS (SELECT * FROM rawdata, devices WHERE rawdata.deveui = devices.deveui AND devices.devname = '#39 + '-T103'#39 + 'AND rawdata.port = 2 AND (rawdata.type = '#39 + 'CONF_UP'#39 + ' OR rawdata.type = '#39 + 'CONF_UP+MAC_LINKADR_ANS'#39 + ') AND FROM_UNIXTIME(rawdata.time DIV 1000) >= NOW() - INTERVAL 1 DAY) AS exist_records;') then
+  begin
+    //ErrorMsg('Проверка наличия зарегистрированных данных за сутки для [Трансомат 1/Трансомат 2]', True, False);
+    PrintTxt('Проверка наличия зарегистрированных данных за сутки для [Трансомат 1/Трансомат 2] ... FAIL', True);
+    { Halt(1); ! Внимание! Здесь нельзя закрывать программу. Т.к. необходима регистрация с других источников данных }
+  end
+  else
+  begin
+    //InfoMsg('Проверка наличия зарегистрированных данных за сутки для [Трансомат 1/Трансомат 2] ... OK', True, False);
+    PrintTxt('Проверка наличия зарегистрированных данных за сутки для [Трансомат 1/Трансомат 2] ... OK', True);
+  end;
+end.

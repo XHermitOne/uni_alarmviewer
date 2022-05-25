@@ -1,0 +1,13 @@
+begin 
+  if not CheckODBCConnection('MySQL ODBC 8.0 Unicode Driver', 'KIP_DB') then
+  begin
+    //ErrorMsg('Нет связи с БД КИП', True, False);
+    PrintTxt('Проверка связи с БД КИП ... FAIL', True);
+    { Halt(1); ! Внимание! Здесь нельзя закрывать программу. Т.к. необходима регистрация с других источников данных }
+  end
+  else
+  begin
+    //InfoMsg('Проверка связи с БД КИП ... OK', True, False);
+    PrintTxt('Проверка связи с БД КИП ... OK', True);
+  end;
+end.
