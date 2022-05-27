@@ -1,7 +1,7 @@
 {
 Функции работы с файлами.
 
-Версия: 0.0.3.1
+Версия: 0.0.4.1
 }
 unit filefunc;
 
@@ -54,6 +54,14 @@ function NormalPathFileName(sPath: AnsiString): AnsiString;
 или пустая строка в случае ошибки.
 }
 function ReadTxtFile(sTxtFileName: AnsiString): AnsiString;
+
+{
+Запись текстового файла
+@param sTxtFileName: Полное имя текстового файла.
+@param sTxtContent: Записываемый текст.
+@return: True - запись прошла успешно / False - ошибка записи.
+}
+function WriteTxtFile(sTxtFileName: AnsiString; sTxtContent: AnsiString): Boolean;
 
 { Преобразование Даты-времени }
 {$IFDEF windows}
@@ -246,8 +254,45 @@ begin
     Close(txt_file);
   except
     Close(txt_file);
-    logfunc.FatalMsgFmt('Ошибка чтения файла <%s>', [sTxtFileName]);
+    logfunc.FatalMsgFmt('Ошибка чтения текстового файла <%s>', [sTxtFileName]);
     Result := '';
+  end;
+end;
+
+{
+Запись текстового файла
+@param sTxtFileName: Полное имя текстового файла.
+@param sTxtContent: Записываемый текст.
+@return: True - запись прошла успешно / False - ошибка записи.
+}
+function WriteTxtFile(sTxtFileName: AnsiString; sTxtContent: AnsiString): Boolean;
+var
+  txt_file: TextFile;
+  lines: TStringList;
+  i_line: Integer;
+begin
+  Result := False;
+
+  if sTxtFileName = '' then
+  begin
+    logfunc.WarningMsg('Не определен текстовый файл');
+    Exit;
+  end;
+
+  try
+    Assign (txt_file, sTxtFileName);
+    Rewrite(txt_file);
+
+    lines := strfunc.ParseStrLines(sTxtContent);
+    for i_line := 0 to lines.Count - 1 do
+      WriteLn(txt_file, lines[i_line]);
+    lines.Destroy;
+
+    Close(txt_file);
+    Result := True;
+  except
+    Close(txt_file);
+    logfunc.FatalMsgFmt('Ошибка записи текстового файла <%s>', [sTxtFileName]);
   end;
 end;
 

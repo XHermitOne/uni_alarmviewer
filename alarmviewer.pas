@@ -27,20 +27,20 @@ type
   TAlarmViewerForm = class(TForm)
     IconImageList: TImageList;
     LogSpeedButton: TSpeedButton;
-    PrgControlBar: TControlBar;
+    CtrlPanel: TPanel;
     ScanTimer: TTimer;
     AlarmStringGrid: TStringGrid;
-    SirenSpeedButton: TSpeedButton;
     LogSQLite3Connection: TSQLite3Connection;
     LogSQLQuery: TSQLQuery;
     LogSQLTransaction: TSQLTransaction;
+    SirenSpeedButton: TSpeedButton;
     SysTrayIcon: TTrayIcon;
 
     procedure AlarmStringGridDrawCell(Sender: TObject; aCol, aRow: Integer;
       aRect: TRect; aState: TGridDrawState);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormShow(Sender: TObject);
+    procedure FormWindowStateChange(Sender: TObject);
     procedure LogSpeedButtonClick(Sender: TObject);
     procedure ScanTimerTimer(Sender: TObject);
     procedure SirenSpeedButtonClick(Sender: TObject);
@@ -82,6 +82,7 @@ procedure TAlarmViewerForm.FormCreate(Sender: TObject);
 var
   scan_tick: Integer;
   log_filename: AnsiString;
+  lines_txt: AnsiString;
 begin
   FSettings := settings.TICSettingsManager.Create;
   FSettings.LoadSettings(settings.SETTINGS_INI_FILENAME);
@@ -98,6 +99,10 @@ begin
   // Состояние запуска сирены при наличии ошибок
   if UpperCase(FSettings.GetOptionValue('OPTIONS', 'siren_on')) = 'TRUE' then
     SirenSpeedButton.Down := True;
+
+  if RunCommand('uni_alarmchecker.exe', [], lines_txt, [poWaitOnExit, poNoConsole]) then
+    ParseCheckTxt(strfunc.EncodeString(lines_txt, 'cp866', 'utf-8'));
+
 end;
 
 procedure TAlarmViewerForm.AlarmStringGridDrawCell(Sender: TObject; aCol,
@@ -113,12 +118,13 @@ begin
   FSettings.Destroy;
 end;
 
-procedure TAlarmViewerForm.FormShow(Sender: TObject);
-var
-  lines_txt: AnsiString;
+procedure TAlarmViewerForm.FormWindowStateChange(Sender: TObject);
 begin
-  if RunCommand('uni_alarmchecker.exe', [], lines_txt, [poWaitOnExit, poNoConsole]) then
-    ParseCheckTxt(strfunc.EncodeString(lines_txt, 'cp866', 'utf-8'));
+  if WindowState = wsMinimized then // Если окно сворачивается
+  begin
+    Hide; // Скрыть окно
+    SysTrayIcon.Visible := True; // Показать иконку в трее
+  end;
 end;
 
 procedure TAlarmViewerForm.LogSpeedButtonClick(Sender: TObject);
@@ -152,15 +158,15 @@ end;
 
 procedure TAlarmViewerForm.SirenSpeedButtonClick(Sender: TObject);
 begin
+  FSettings.Content.SaveOptionValue('OPTIONS', 'siren_on', strfunc.BooleanToStr(SirenSpeedButton.Down));
   RunSiren(FIsError);
 end;
 
 procedure TAlarmViewerForm.SysTrayIconClick(Sender: TObject);
 begin
-  if Visible then
-    Hide
-  else
-    Show;
+  SysTrayIcon.Visible := False; // Скрываем иконку в трее
+  WindowState := wsNormal; // Разворачиваем окно
+  Show; // Показываем окно
 end;
 
 { Функция парсинга текста проверки аварий }
@@ -201,6 +207,7 @@ begin
   lines.Destroy;
 
   SetTrayIcon(FIsError);
+  //if SirenSpeedButton.Down then
   RunSiren(FIsError);
 
   DeleteNotActual();
@@ -219,7 +226,7 @@ begin
   try
     IconImageList.GetBitmap(Integer(not aIsError), bmp);
     SysTrayIcon.Icon.Assign(bmp);
-    SysTrayIcon.Show;
+    // SysTrayIcon.Show;
   finally
     bmp.Free;
   end;

@@ -40,6 +40,7 @@ Var DIALOG_SETTINGS
 Var LABEL_LOG_DB_FILENAME
 Var EDIT_LOG_DB_FILENAME
 Var CHECKBOX_AUTOSTART
+Var CHECKBOX_SHORTCUT
 
 
 ; === ‘ункции ===
@@ -65,6 +66,11 @@ Function nsDialogsPage
     GetFunctionAddress $0 OnCheckboxAutostart
     nsDialogs::OnClick $CHECKBOX_AUTOSTART $0
 
+    ${NSD_CreateCheckbox} 0 80 100% 8u "—оздать €рлык на рабочем столе"
+    Pop $CHECKBOX_SHORTCUT
+    GetFunctionAddress $1 OnCheckboxShortCut
+    nsDialogs::OnClick $CHECKBOX_SHORTCUT $1
+
     nsDialogs::Show
 
 FunctionEnd
@@ -89,6 +95,11 @@ Function OnCheckboxAutostart
     CreateShortCut "$SMSTARTUP\uni_alarmviewer.lnk" "$INSTDIR\uni_alarmviewer.exe"
 FunctionEnd
 
+Function OnCheckboxShortCut
+    Pop $1 # HWND
+    CreateShortCut "$DESKTOP\uni_alarmviewer.lnk" "$INSTDIR\uni_alarmviewer.exe"
+FunctionEnd
+
 ; === ѕакеты дл€ инсталл€ции ===
 ; --- ќб€зательные пакеты ---
 Section "—истема отслеживани€ и журналировани€ аварий <UNI_ALARMVIEWER>"
@@ -103,19 +114,47 @@ Section "—истема отслеживани€ и журналировани€ аварий <UNI_ALARMVIEWER>"
   File "uni_alarmchecker.exe"
   ; —копировать иконку
   File "uni_alarmchecker.ico"
-  ;File "uni_alarmchecker.res"
+  File "uni_alarmchecker.res"
 
   ; —копировать туда 
   File "uni_alarmviewer.exe"
   ; —копировать иконку
   File "uni_alarmviewer.ico"
-  ;File "uni_alarmchecker.res"
+  File "uni_alarmchecker.res"
 
-  CopyFiles /FILESONLY "$EXEDIR\*.wav" "$INSTDIR"
+  File "fur-elise---bethoven_[Pro-Sound.org].wav"
   
   ; ‘айлы настройки
-  CopyFiles /FILESONLY "$EXEDIR\*.ini" "$INSTDIR"
-  CopyFiles /FILESONLY "$EXEDIR\*.txt" "$INSTDIR"
+  File "settings.ini" 
+  File "alarm_kip_db_check.txt"
+  File "alarm_ping_kip_host_check.txt"
+  File "alarm_ping_telemetria_host_check.txt"
+  File "alarm_t101_check.txt"
+  File "alarm_t102_check.txt"
+  File "alarm_t103_check.txt"
+  File "alarm_t104_check.txt"
+  File "alarm_t105_check.txt"
+  File "alarm_t106_check.txt"
+  File "alarm_t107_check.txt"
+  File "alarm_t108_check.txt"
+  File "alarm_t109_check.txt"
+  File "alarm_t110_check.txt"
+  File "alarm_t111_check.txt"
+  File "alarm_t121_check.txt"
+  File "alarm_t122_check.txt"
+  File "alarm_t123_check.txt"
+  File "alarm_t124_check.txt"
+  File "alarm_t125_check.txt"
+  File "alarm_t126_check.txt"
+  File "alarm_t127_check.txt"
+  File "alarm_t128_check.txt"
+  File "alarm_t129_check.txt"
+  File "alarm_t130_check.txt"
+
+  ; Ѕиблиотеки
+  File "sqlite3.dll"
+
+  Exec 'net use Y: \\NAS1\defis'
 
   ; —оздать программу деинстал€ции
   WriteUninstaller $INSTDIR\uninstall.exe
@@ -141,6 +180,8 @@ Section "Uninstall"
   RMDir /r "$INSTDIR"
 
   Delete "$SMSTARTUP\uni_alarmviewer.lnk"  
+
+  Exec 'net use Y: /delete'
 
   MessageBox MB_OK "ƒеинстал€ци€ UNI_ALARMVIEWER завершена успешно"
 

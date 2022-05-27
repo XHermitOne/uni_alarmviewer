@@ -1,7 +1,7 @@
 {
 Функции работы со строками
 
-Версия: 0.0.6.1
+Версия: 0.0.7.1
 }
 unit strfunc;
 
@@ -163,6 +163,11 @@ function IsEmptyStr(sTxt: AnsiString): Boolean;
 Возврашает список строк.
 }
 function ParseStrLines(sString: AnsiString): TStringList;
+
+{
+Преобразовать логическое в строку
+}
+function BooleanToStr(aBoolean: Boolean): AnsiString;
 
 implementation
 
@@ -466,6 +471,17 @@ begin
   for i := 0 to Length(str_array) - 1 do
     str_lines.Add(str_array[i]);
   Result := str_lines;
+end;
+
+{
+Преобразовать логическое в строку
+}
+function BooleanToStr(aBoolean: Boolean): AnsiString;
+begin
+  if aBoolean then
+    Result := 'True'
+  else
+    Result := 'False';
 end;
 
 end.

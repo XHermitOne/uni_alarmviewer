@@ -1,7 +1,7 @@
 {
 Модуль поддержки настроек программы
 
-Версия: 0.0.3.2
+Версия: 0.0.4.1
 }
 unit settings;
 
@@ -43,6 +43,13 @@ type
     }
     function LoadSettings(sINIFileName: AnsiString): Boolean;
     {
+    Сохранение параметров из INI файле
+    @param sINIFileName Полное наименование INI Файла
+    @return True/False
+    }
+    function SaveSettings(sINIFileName: AnsiString = ''): Boolean;
+
+    {
     Проверка существования файла настройки
     @param sINIFileName Полное наименование INI Файла
     @return True/False
@@ -62,6 +69,14 @@ type
     @return Значение параметра в виде строки
     }
     function GetOptionValue(sSectionName: AnsiString; sOptionName: AnsiString): AnsiString;
+
+    {
+    Сохранить значение опции
+    @param sSectionName Наименование секции
+    @param sOptionName Наименование параметра
+    @param sValue Значение параметра в виде строки
+    }
+    function SetOptionValue(sSectionName: AnsiString; sOptionName: AnsiString; sValue: AnsiString; aAutoSave: Boolean = False): Boolean;
 
     {
     Получить список имен опций одной секции
@@ -88,6 +103,8 @@ type
     }
     function GetSectionNames(): TArrayOfString;
 
+    // Содержимое INI файла
+    property Content: TIniDictionary read FContent;
   end;
 
 var
@@ -220,6 +237,23 @@ begin
 end;
 
 {
+Сохранение параметров из INI файле
+@param sINIFileName Полное наименование INI Файла
+@return True/False
+}
+function TICSettingsManager.SaveSettings(sINIFileName: AnsiString = ''): Boolean;
+begin
+  if sINIFileName = '' then
+    sINIFileName := FIniFileName;
+
+  Result := False;
+  if not FContent.IsEmpty then
+    Result := FContent.SaveIniFile(sIniFileName)
+  else
+    logfunc.WarningMsgFmt('Не определены настройки в INI файле <%s>' , [sIniFileName]);
+end;
+
+{
 Собрать полное описание секции с учетом ключа parent.
 Через ключ parent можно наследовать описание секции.
 @param (sSectionName Наименование запрашиваемой секции)
@@ -336,6 +370,16 @@ end;
 function TICSettingsManager.GetOptionValue(sSectionName: Ansistring; sOptionName: Ansistring): AnsiString;
 begin
   Result := FContent.GetOptionValue(sSectionName, sOptionName);
+end;
+
+{
+Сохранить значение опции
+}
+function TICSettingsManager.SetOptionValue(sSectionName: Ansistring; sOptionName: Ansistring; sValue: AnsiString; aAutoSave: Boolean = False): Boolean;
+begin
+  Result := FContent.SetOptionValue(sSectionName, sOptionName, sValue);
+  if aAutoSave then
+    Result := Result and SaveSettings();
 end;
 
 {
