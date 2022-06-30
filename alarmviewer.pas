@@ -196,8 +196,8 @@ begin
     FAlarms[i_line].name := tag_name;
     FAlarms[i_line].message := message;
     if not FIsError then
-      FIsError := check <> 'OK';
-    FAlarms[i_line].status := check = 'OK';
+      FIsError := check = 'FAIL';
+    FAlarms[i_line].status := check = 'OK' ;
 
     AlarmStringGrid.InsertRowWithValues(i_line + 1, ['', '', '', message]);
 
@@ -251,6 +251,7 @@ function TAlarmViewerForm.SaveLogMessage(aMessage: AnsiString; aMsgType: AnsiStr
 begin
   Result := False;
 
+  //LogSQLite3Connection.
   try
     if not aIfNotLogged then
     begin

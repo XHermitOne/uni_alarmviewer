@@ -3,7 +3,7 @@
   <ProjectSession>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="26">
+    <Units Count="14">
       <Unit0>
         <Filename Value="uni_alarmviewer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -11,7 +11,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="103"/>
         <CursorPos Y="114"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
       </Unit0>
       <Unit1>
         <Filename Value="alarmviewer.pas"/>
@@ -20,9 +20,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="246"/>
-        <CursorPos Y="254"/>
-        <UsageCount Value="131"/>
+        <TopLine Value="185"/>
+        <CursorPos X="25" Y="197"/>
+        <UsageCount Value="1755"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -32,7 +32,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="41"/>
         <CursorPos X="22" Y="359"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
@@ -41,14 +41,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="441"/>
         <CursorPos X="17" Y="456"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
       </Unit3>
       <Unit4>
         <Filename Value="utils/exttypes.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
         <CursorPos X="3" Y="19"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -57,7 +57,7 @@
         <EditorIndex Value="5"/>
         <TopLine Value="261"/>
         <CursorPos Y="270"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -66,7 +66,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="283"/>
         <CursorPos Y="300"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
@@ -76,7 +76,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
       </Unit7>
       <Unit8>
         <Filename Value="utils/memfunc.pas"/>
@@ -85,7 +85,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
       </Unit8>
       <Unit9>
         <Filename Value="utils/netfunc.pas"/>
@@ -93,7 +93,7 @@
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
         <CursorPos X="31" Y="17"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
       </Unit9>
       <Unit10>
         <Filename Value="utils/strfunc.pas"/>
@@ -101,7 +101,7 @@
         <EditorIndex Value="6"/>
         <TopLine Value="457"/>
         <CursorPos X="23" Y="486"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
@@ -110,7 +110,7 @@
         <EditorIndex Value="7"/>
         <TopLine Value="84"/>
         <CursorPos X="79" Y="105"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
         <Loaded Value="True"/>
       </Unit11>
       <Unit12>
@@ -119,7 +119,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="95"/>
         <CursorPos Y="106"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="1755"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
@@ -129,198 +129,113 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="1712"/>
       </Unit13>
-      <Unit14>
-        <Filename Value="utils/log.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="67"/>
-        <UsageCount Value="56"/>
-      </Unit14>
-      <Unit15>
-        <Filename Value="obj_proto.pas"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="49"/>
-      </Unit15>
-      <Unit16>
-        <Filename Value="data_ctrl/reg_data_ctrl.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos Y="7"/>
-        <UsageCount Value="49"/>
-      </Unit16>
-      <Unit17>
-        <Filename Value="data_ctrl/alarm_check_node.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="5"/>
-        <CursorPos X="18" Y="13"/>
-        <UsageCount Value="49"/>
-      </Unit17>
-      <Unit18>
-        <Filename Value="engine.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="159"/>
-        <CursorPos X="29" Y="177"/>
-        <UsageCount Value="49"/>
-      </Unit18>
-      <Unit19>
-        <Filename Value="../../lazarus/fpc/3.2.2/source/packages/fcl-process/src/process.pp"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="4"/>
-        <CursorPos X="21" Y="27"/>
-        <UsageCount Value="3"/>
-      </Unit19>
-      <Unit20>
-        <Filename Value="../../lazarus/components/lazutils/utf8process.pp"/>
-        <UnitName Value="UTF8Process"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="85"/>
-        <CursorPos X="3" Y="48"/>
-        <UsageCount Value="3"/>
-      </Unit20>
-      <Unit21>
-        <Filename Value="../../lazarus/lcl/grids.pas"/>
-        <UnitName Value="Grids"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="10118"/>
-        <CursorPos Y="10133"/>
-        <UsageCount Value="3"/>
-      </Unit21>
-      <Unit22>
-        <Filename Value="../../lazarus/lcl/include/icon.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="828"/>
-        <CursorPos Y="828"/>
-        <UsageCount Value="4"/>
-      </Unit22>
-      <Unit23>
-        <Filename Value="../../lazarus/fpc/3.2.2/source/rtl/objpas/sysutils/finah.inc"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="10" Y="26"/>
-        <UsageCount Value="16"/>
-      </Unit23>
-      <Unit24>
-        <Filename Value="../../lazarus/fpc/3.2.2/source/rtl/objpas/classes/classesh.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="831"/>
-        <CursorPos X="14" Y="844"/>
-        <UsageCount Value="11"/>
-      </Unit24>
-      <Unit25>
-        <Filename Value="alarmviewer.lfm"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="241"/>
-        <CursorPos X="14" Y="265"/>
-        <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit25>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="240" TopLine="224"/>
+        <Caret Column="5"/>
       </Position1>
       <Position2>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="258" TopLine="234"/>
+        <Caret Line="266" TopLine="248"/>
       </Position2>
       <Position3>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Column="5"/>
+        <Caret Line="274" Column="27" TopLine="258"/>
       </Position3>
       <Position4>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="266" TopLine="248"/>
+        <Caret Line="128" TopLine="118"/>
       </Position4>
       <Position5>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="274" Column="27" TopLine="258"/>
+        <Caret Line="142" TopLine="113"/>
       </Position5>
       <Position6>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="128" TopLine="118"/>
+        <Caret Line="151" Column="3" TopLine="132"/>
       </Position6>
       <Position7>
-        <Filename Value="alarmviewer.pas"/>
-        <Caret Line="142" TopLine="113"/>
-      </Position7>
-      <Position8>
-        <Filename Value="alarmviewer.pas"/>
-        <Caret Line="151" Column="3" TopLine="132"/>
-      </Position8>
-      <Position9>
         <Filename Value="utils/inifunc.pas"/>
         <Caret Line="4" Column="22"/>
-      </Position9>
-      <Position10>
+      </Position7>
+      <Position8>
         <Filename Value="utils/filefunc.pas"/>
         <Caret Line="289" Column="5" TopLine="267"/>
-      </Position10>
-      <Position11>
+      </Position8>
+      <Position9>
         <Filename Value="utils/filefunc.pas"/>
         <Caret Line="270" TopLine="261"/>
+      </Position9>
+      <Position10>
+        <Filename Value="utils/inifunc.pas"/>
+        <Caret Line="266" Column="109" TopLine="242"/>
+      </Position10>
+      <Position11>
+        <Filename Value="utils/inifunc.pas"/>
+        <Caret Line="226" Column="20" TopLine="209"/>
       </Position11>
       <Position12>
         <Filename Value="utils/inifunc.pas"/>
-        <Caret Line="266" Column="109" TopLine="242"/>
+        <Caret Line="223" Column="32" TopLine="209"/>
       </Position12>
       <Position13>
-        <Filename Value="utils/inifunc.pas"/>
-        <Caret Line="226" Column="20" TopLine="209"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="251" Column="30" TopLine="229"/>
       </Position13>
       <Position14>
-        <Filename Value="utils/inifunc.pas"/>
-        <Caret Line="223" Column="32" TopLine="209"/>
+        <Filename Value="settings.pas"/>
+        <Caret Line="376" Column="123" TopLine="361"/>
       </Position14>
       <Position15>
         <Filename Value="settings.pas"/>
-        <Caret Line="251" Column="30" TopLine="229"/>
+        <Caret Line="380" Column="40" TopLine="354"/>
       </Position15>
       <Position16>
-        <Filename Value="settings.pas"/>
-        <Caret Line="376" Column="123" TopLine="361"/>
+        <Filename Value="alarmviewer.pas"/>
+        <Caret Line="153" Column="52" TopLine="142"/>
       </Position16>
       <Position17>
-        <Filename Value="settings.pas"/>
-        <Caret Line="380" Column="40" TopLine="354"/>
+        <Filename Value="alarmviewer.pas"/>
+        <Caret Line="69" Column="24" TopLine="59"/>
       </Position17>
       <Position18>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="153" Column="52" TopLine="142"/>
+        <Caret Line="126" Column="16" TopLine="102"/>
       </Position18>
       <Position19>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="69" Column="24" TopLine="59"/>
+        <Caret Line="165" Column="39" TopLine="141"/>
       </Position19>
       <Position20>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="126" Column="16" TopLine="102"/>
+        <Caret Line="167" Column="14" TopLine="143"/>
       </Position20>
       <Position21>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="165" Column="39" TopLine="141"/>
+        <Caret Line="223" Column="27" TopLine="204"/>
       </Position21>
       <Position22>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="167" Column="14" TopLine="143"/>
+        <Caret Line="222" Column="27" TopLine="203"/>
       </Position22>
       <Position23>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="223" Column="27" TopLine="204"/>
+        <Caret Line="221" Column="27" TopLine="202"/>
       </Position23>
       <Position24>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="222" Column="27" TopLine="203"/>
+        <Caret Line="220" Column="27" TopLine="201"/>
       </Position24>
       <Position25>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="221" Column="27" TopLine="202"/>
+        <Caret Line="222" Column="27" TopLine="203"/>
       </Position25>
       <Position26>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="220" Column="27" TopLine="201"/>
+        <Caret Line="223" Column="27" TopLine="204"/>
       </Position26>
       <Position27>
         <Filename Value="alarmviewer.pas"/>
@@ -328,15 +243,15 @@
       </Position27>
       <Position28>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="223" Column="27" TopLine="204"/>
+        <Caret Line="221" Column="27" TopLine="202"/>
       </Position28>
       <Position29>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="222" Column="27" TopLine="203"/>
+        <Caret Line="272" Column="32" TopLine="147"/>
       </Position29>
       <Position30>
         <Filename Value="alarmviewer.pas"/>
-        <Caret Line="221" Column="27" TopLine="202"/>
+        <Caret Line="199" Column="26" TopLine="185"/>
       </Position30>
     </JumpHistory>
     <RunParams>
