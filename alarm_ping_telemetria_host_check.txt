@@ -1,5 +1,5 @@
 begin 
-  if not DoPing('telemetria-win') then
+  if not DoAnySeriesPing('telemetria-win', 3, 5000) then
   begin
     //ErrorMsg('Проверка связи с сервером регистрации TELEMETRIA-WIN', True, False);
     PrintTxt('Проверка связи с сервером регистрации TELEMETRIA-WIN ... FAIL', True);

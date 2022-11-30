@@ -157,6 +157,8 @@ begin
   //Sender.AddFunction(@Halt, 'procedure Halt(ErrNum: LongInt)');
 
   Sender.AddFunction(@netfunc.DoPing, 'function DoPing(sHost: AnsiString): Boolean)');
+  Sender.AddFunction(@netfunc.DoAnySeriesPing, 'function DoAnySeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean)');
+  Sender.AddFunction(@netfunc.DoAllSeriesPing, 'function DoAllSeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean)');
 
   Sender.AddFunction(@dbfunc.CheckODBCConnection, 'function CheckODBCConnection(aDriver: AnsiString; aDataSourceName: AnsiString): Boolean)');
   Sender.AddFunction(@dbfunc.ExistsRecordsODBC, 'function ExistsRecordsODBC(aDriver: AnsiString; aDataSourceName: AnsiString; aSQL: AnsiString): Boolean');

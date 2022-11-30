@@ -1,7 +1,7 @@
 {
 Функции работы с сетью.
 
-Версия: 0.0.1.1
+Версия: 0.0.2.1
 }
 unit netfunc;
 
@@ -23,6 +23,24 @@ uses
 }
 function DoPing(sHost: AnsiString): Boolean;
 
+{
+Проверка связи по нескольким Ping. Не жесткая проверк (Пинги могут пропадать)
+@param sHost Имя/IP адрес пингуемого компьютера
+@param uCount: Количество проверяемых пингов.
+@param uDelay: Задержка между пингами в миллисекундах.
+@return True - Связь есть / False - Нет пинга
+}
+function DoAnySeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean;
+
+{
+Проверка связи по нескольким Ping. Жесткая проверка (Все пинги должны присутствовать)
+@param sHost Имя/IP адрес пингуемого компьютера
+@param uCount: Количество проверяемых пингов.
+@param uDelay: Задержка между пингами в миллисекундах.
+@return True - Связь есть / False - Нет пинга
+}
+function DoAllSeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean;
+
 implementation
 
 {
@@ -41,6 +59,46 @@ begin
     Result := ping_send.Ping(sHost);
   finally
     ping_send.Free;
+  end;
+end;
+
+{
+Проверка связи по нескольким Ping
+@param sHost Имя/IP адрес пингуемого компьютера
+@param uCount: Количество проверяемых пингов.
+@param uDelay: Задержка между пингами в миллисекундах.
+@return True - Связь есть / False - Нет пинга
+}
+function DoAnySeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to uCount do
+  begin
+    Result := Result or DoPing(sHost);
+    if uDelay > 0 then
+       Delay(uDelay);
+  end;
+end;
+
+{
+Проверка связи по нескольким Ping
+@param sHost Имя/IP адрес пингуемого компьютера
+@param uCount: Количество проверяемых пингов.
+@param uDelay: Задержка между пингами в миллисекундах.
+@return True - Связь есть / False - Нет пинга
+}
+function DoAllSeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean;
+var
+  i: Integer;
+begin
+  Result := True;
+  for i := 0 to uCount do
+  begin
+    Result := Result and DoPing(sHost);
+    if uDelay > 0 then
+       Delay(uDelay);
   end;
 end;
 

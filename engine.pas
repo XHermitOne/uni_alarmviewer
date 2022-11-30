@@ -1,7 +1,7 @@
 {
 Модуль классов движка
 
-Версия: 0.0.3.2
+Версия: 0.0.4.1
 }
 
 unit engine;
@@ -134,6 +134,7 @@ type
     private
       { Признак запущеной обработки тика }
       FIsTick: Boolean;
+
     public
       { Конструктор }
       constructor Create(TheOwner: TComponent);
@@ -171,6 +172,11 @@ type
 
     published
       property IsTick: Boolean read FIsTick;
+
+      { Количество попыток проверки аварии }
+      property AlarmTryCount: Integer read FAlarmTryCount write FAlarmTryCount;
+      { Временная задержка между попытками проверки }
+      property AlarmTryDelay: Cardinal read FAlarmTryDelay write FAlarmTryDelay;
 
     end;
 
@@ -544,6 +550,7 @@ destructor TICAlarmChecker.Destroy;
 begin
   inherited Destroy;
 end;
+
 
 { Прочитать значение из источника данных }
 function TICAlarmChecker.ReadValueAsString(sSrcTypeName: AnsiString; const aArgs: Array Of Const; sAddress: AnsiString): AnsiString;
