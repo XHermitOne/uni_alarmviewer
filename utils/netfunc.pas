@@ -14,6 +14,7 @@ uses
     //blcksock,
     //synautil,
     //synsock,
+    crt,
     pingsend;
 
 {
@@ -30,7 +31,7 @@ function DoPing(sHost: AnsiString): Boolean;
 @param uDelay: Задержка между пингами в миллисекундах.
 @return True - Связь есть / False - Нет пинга
 }
-function DoAnySeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean;
+function DoAnySeriesPing(sHost: AnsiString; uCount: Integer; uDelay: Cardinal): Boolean;
 
 {
 Проверка связи по нескольким Ping. Жесткая проверка (Все пинги должны присутствовать)
@@ -39,7 +40,7 @@ function DoAnySeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Bo
 @param uDelay: Задержка между пингами в миллисекундах.
 @return True - Связь есть / False - Нет пинга
 }
-function DoAllSeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean;
+function DoAllSeriesPing(sHost: AnsiString; uCount: Integer; uDelay: Cardinal): Boolean;
 
 implementation
 
@@ -69,16 +70,16 @@ end;
 @param uDelay: Задержка между пингами в миллисекундах.
 @return True - Связь есть / False - Нет пинга
 }
-function DoAnySeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean;
+function DoAnySeriesPing(sHost: AnsiString; uCount: Integer; uDelay: Cardinal): Boolean;
 var
   i: Integer;
 begin
   Result := False;
-  for i := 0 to uCount do
+  for i := 0 to uCount - 1 do
   begin
     Result := Result or DoPing(sHost);
     if uDelay > 0 then
-       Delay(uDelay);
+       crt.Delay(uDelay);
   end;
 end;
 
@@ -89,12 +90,12 @@ end;
 @param uDelay: Задержка между пингами в миллисекундах.
 @return True - Связь есть / False - Нет пинга
 }
-function DoAllSeriesPing(sHost: AnsiString; uCount: Integer; uDelay: UInt64): Boolean;
+function DoAllSeriesPing(sHost: AnsiString; uCount: Integer; uDelay: Cardinal): Boolean;
 var
   i: Integer;
 begin
   Result := True;
-  for i := 0 to uCount do
+  for i := 0 to uCount - 1 do
   begin
     Result := Result and DoPing(sHost);
     if uDelay > 0 then

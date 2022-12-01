@@ -173,11 +173,6 @@ type
     published
       property IsTick: Boolean read FIsTick;
 
-      { Количество попыток проверки аварии }
-      property AlarmTryCount: Integer read FAlarmTryCount write FAlarmTryCount;
-      { Временная задержка между попытками проверки }
-      property AlarmTryDelay: Cardinal read FAlarmTryDelay write FAlarmTryDelay;
-
     end;
 
 var

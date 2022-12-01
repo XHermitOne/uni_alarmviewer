@@ -5,7 +5,7 @@ del uni_alarmchecker.mem
 echo.
 @echo Запуск в: %time%
 echo.
-uni_alarmchecker.exe
+uni_alarmchecker.exe --debug
 echo.
 @echo Останов в: %time%
 echo.
