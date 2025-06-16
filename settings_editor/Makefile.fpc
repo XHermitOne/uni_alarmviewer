@@ -1,0 +1,12 @@
+[target]
+programs=settings_editor
+
+[compiler]
+unitdir=./fv_utf8
+#unitdir=../../rtl-console/src/unix
+#unitdir=../../rtl-unicode/src/inc
+#unitdir=../../rtl-extra/src/inc
+#includedir=../../rtl-console/src/inc
+
+[default]
+fpcdir=/home/xhermit/fpcupdeluxe/fpc/bin/x86_64-linux/
