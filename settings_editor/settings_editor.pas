@@ -97,10 +97,9 @@ begin
         ShowAbout();
       end;
 
-      // Открыть файл
       cmOpen: 
       begin
-        // 
+        // Открыть файл
       end;
       else 
       begin

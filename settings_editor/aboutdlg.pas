@@ -25,9 +25,9 @@ begin
   // StaticText
   R.Assign(5, 2, 41, 8);
   Insert(new(PStaticText, Init(R,
-    'Free Vison Tutorial 1.0' + #13 +
-    '2017' + #13 +
-    'Gechrieben von M. Burkhard' + #13#32#13 +
+    'Settings Editor 1.0' + #13 +
+    '2025' + #13 +
+    'Alex XHermit. My email: xhermitone@gmail.com' + #13#32#13 +
     'FPC: '+ {$I %FPCVERSION%} + '   OS:'+ {$I %FPCTARGETOS%} + '   CPU:' + {$I %FPCTARGETCPU%})));
 
   // Ok-Button
