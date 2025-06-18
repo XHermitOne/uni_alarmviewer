@@ -13,7 +13,10 @@ uses
   Views,    // cmQuit
   Menus,
   Dialogs,
-  AboutDlg;    // 
+  StdDlg,
+  AboutDlg,
+  inifile,
+  dbgfunc;    // 
 
 // Коды комманд меню
 const
@@ -27,7 +30,14 @@ type
     procedure InitMenuBar; virtual;      // Инициализация меню
     procedure HandleEvent(var Event: TEvent); virtual; // Обработчик событий
   private
+    FIniFileName: String;
+    FIniFile: inifile.PIniFile;
+
     procedure ShowAbout();
+    function SelectIniFileName(): String;
+
+    // Открыть Ini файл для редактирования
+    procedure OpenIniFile(AIniFileName: String);
 end;
 
 
@@ -100,6 +110,9 @@ begin
       cmOpen: 
       begin
         // Открыть файл
+        FIniFileName := SelectIniFileName();
+        // StatusLine.Hint := FIniFileName;
+        OpenIniFile(FIniFileName);
       end;
       else 
       begin
@@ -122,6 +135,42 @@ begin
     Dispose(about_dialog, Done);               
   end;
 end;
+
+
+function TSettingsEditorApp.SelectIniFileName(): String;
+var
+  file_dialog: PFileDialog;
+  ini_filename: String;
+begin
+  ini_filename := '*.ini';
+  New(file_dialog, Init(ini_filename, 'Файлы настроек:', 'Выбрать', fdOpenButton, 1));
+  if ExecuteDialog(file_dialog, @ini_filename) <> cmCancel then
+    SelectIniFileName := ini_filename
+  else
+    SelectIniFileName := '';
+end;
+
+
+procedure TSettingsEditorApp.OpenIniFile(AIniFileName: String);
+var 
+  i: Integer;
+begin
+  if Length(AIniFileName) = 0 then
+  begin
+    AIniFileName := SelectIniFileName();
+    FIniFileName := AIniFileName;
+  end;
+
+  FIniFile := New(PIniFile, Init(AIniFileName));
+  dbgfunc.DebugMsgFmt('Список: %s', [FIniFile^.ReadString('OPTIONS', 'log_filename', '')]);
+//  for i := 0 to FIniFile^.List^.Count - 1 do
+//  begin
+//    dbgfunc.DebugMsgFmt('Количество секций [%d]', [FIniFile^.List^.Count]);
+//  end;
+  
+  FIniFile^.Free;   
+end;
+
 
 var
   SettingsEditorApp: TSettingsEditorApp;
