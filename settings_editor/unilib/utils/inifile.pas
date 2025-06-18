@@ -40,7 +40,7 @@ type
       procedure WriteReal(Section, Name: string; Value: real);
       procedure EraseSection(const Section: string);
       procedure DeleteKey(const Section, Ident: String);
-//  private
+  private
       function GetSection(Name: string; AutoCreate: boolean): PCollection;
       function GetParamName(Sect: PCollection; Name: string): Pointer;
       function ReadHeader(S: PStream): string;
@@ -49,10 +49,11 @@ type
 {    function GetItem(Section,Name:string; AutoCreate:boolean): pointer;}
       function GetLine(S: PStream): string;
 
+  public
       property IniFileName: FNameStr read FFileName;
       property IsModified: Boolean read FModified;
-      property List: PCollection read FList;
-      property Line: String read FLine;
+      //property List: PCollection read FList;
+      //property Line: String read FLine;
   end;
 
 function ApplicationIniFile:PIniFile;

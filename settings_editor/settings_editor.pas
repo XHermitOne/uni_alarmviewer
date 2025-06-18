@@ -154,6 +154,7 @@ end;
 procedure TSettingsEditorApp.OpenIniFile(AIniFileName: String);
 var 
   i: Integer;
+  s: String;
 begin
   if Length(AIniFileName) = 0 then
   begin
@@ -162,7 +163,7 @@ begin
   end;
 
   FIniFile := New(PIniFile, Init(AIniFileName));
-  dbgfunc.DebugMsgFmt('Список: %s', [FIniFile^.ReadString('OPTIONS', 'log_filename', '')]);
+  s := FIniFile^.ReadString('OPTIONS', 'log_filename', '');
 //  for i := 0 to FIniFile^.List^.Count - 1 do
 //  begin
 //    dbgfunc.DebugMsgFmt('Количество секций [%d]', [FIniFile^.List^.Count]);
